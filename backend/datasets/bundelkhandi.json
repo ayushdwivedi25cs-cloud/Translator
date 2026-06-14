@@ -1,0 +1,54 @@
+[
+    {
+        "english": "Come here.",
+        "bundelkhandi": "इत्ते आओ।",
+        "domain": "daily_conversation",
+        "metadata": {
+            "speaker_age": 42,
+            "district": "Jhansi",
+            "gender": "male"
+        }
+    },
+    {
+        "english": "What are you doing?",
+        "bundelkhandi": "का कर रहे हो?",
+        "domain": "questions",
+        "metadata": {
+            "speaker_age": 35,
+            "district": "Banda",
+            "gender": "female"
+        }
+    },
+    {
+        "english": "I will come tomorrow.",
+        "bundelkhandi": "हम कल्ह आहैं।",
+        "domain": "grammar_phenomena",
+        "phenomenon": "future_tense",
+        "metadata": {
+            "speaker_age": 28,
+            "district": "Mahoba",
+            "gender": "male"
+        }
+    },
+    {
+        "english": "Water the crops.",
+        "bundelkhandi": "खेत में पानी लगा दओ।",
+        "domain": "agriculture",
+        "metadata": {
+            "speaker_age": 55,
+            "district": "Tikamgarh",
+            "gender": "male"
+        }
+    },
+    {
+        "english": "I am not going.",
+        "bundelkhandi": "हम नइ जा रहे।",
+        "domain": "grammar_phenomena",
+        "phenomenon": "negation",
+        "metadata": {
+            "speaker_age": 22,
+            "district": "Sagar",
+            "gender": "female"
+        }
+    }
+]

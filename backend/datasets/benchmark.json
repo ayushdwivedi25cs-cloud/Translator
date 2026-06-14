@@ -1,0 +1,41 @@
+{
+  "metadata": {
+    "description": "Benchmark dataset for evaluating BhashaAI dialect and Hinglish translations.",
+    "target_size": 1000,
+    "current_size": 5
+  },
+  "dataset": [
+    {
+      "category": "common_conversational",
+      "english": "Please complete the documentation process before submitting the application.",
+      "expected_hinglish": "Please documentation process complete kar lo before application submit karne se pehle.",
+      "tags": ["hinglish", "business"]
+    },
+    {
+      "category": "common_conversational",
+      "english": "Where are you going?",
+      "expected_bundelkhandi": "तुम कहाँ जात हो?",
+      "expected_hindi": "तुम कहाँ जा रहे हो?",
+      "tags": ["bundelkhandi", "daily_life"]
+    },
+    {
+      "category": "government_service",
+      "english": "The government has introduced a new digital authentication framework.",
+      "expected_hinglish": "Government ne ek naya digital authentication framework introduce kiya hai.",
+      "tags": ["hinglish", "government"]
+    },
+    {
+      "category": "common_conversational",
+      "english": "Can you explain the implementation strategy for this project?",
+      "expected_hinglish": "Kya tum is project ki implementation strategy explain kar sakte ho?",
+      "tags": ["hinglish", "business"]
+    },
+    {
+      "category": "common_conversational",
+      "english": "Come here and sit here.",
+      "expected_bundelkhandi": "इत्ते आओ और इत्ते बैठो।",
+      "expected_hindi": "यहाँ आओ और यहाँ बैठो।",
+      "tags": ["bundelkhandi", "daily_life"]
+    }
+  ]
+}

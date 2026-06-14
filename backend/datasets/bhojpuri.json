@@ -1,0 +1,54 @@
+[
+    {
+        "english": "Come here.",
+        "bhojpuri": "एहिजा आवा।",
+        "domain": "daily_conversation",
+        "metadata": {
+            "speaker_age": 45,
+            "district": "Gorakhpur",
+            "gender": "male"
+        }
+    },
+    {
+        "english": "What are you doing?",
+        "bhojpuri": "का करत बाड़अ?",
+        "domain": "questions",
+        "metadata": {
+            "speaker_age": 30,
+            "district": "Ara",
+            "gender": "female"
+        }
+    },
+    {
+        "english": "I will come tomorrow.",
+        "bhojpuri": "हम काल्ह आइब।",
+        "domain": "grammar_phenomena",
+        "phenomenon": "future_tense",
+        "metadata": {
+            "speaker_age": 25,
+            "district": "Chapra",
+            "gender": "male"
+        }
+    },
+    {
+        "english": "Water the crops.",
+        "bhojpuri": "खेत मे पानी पटावा।",
+        "domain": "agriculture",
+        "metadata": {
+            "speaker_age": 50,
+            "district": "Ballia",
+            "gender": "male"
+        }
+    },
+    {
+        "english": "I am not going.",
+        "bhojpuri": "हम नइखीं जात।",
+        "domain": "grammar_phenomena",
+        "phenomenon": "negation",
+        "metadata": {
+            "speaker_age": 32,
+            "district": "Siwan",
+            "gender": "female"
+        }
+    }
+]
