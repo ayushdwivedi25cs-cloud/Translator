@@ -87,38 +87,76 @@ class TranslationRequest(BaseModel):
     mode: str = "Professional"
 
 LANGUAGE_MAP = {
+    # International Language
     "English": "en",
+    
+    # Major Indian Languages (Official Languages)
     "Hindi": "hi",
-    "Hinglish": "hi",          # Romanised Hindi → translate to Hindi as base
-    "Kannada": "kn",
-    "Telugu": "te",
     "Tamil": "ta",
+    "Telugu": "te",
+    "Kannada": "kn",
     "Malayalam": "ml",
     "Marathi": "mr",
     "Gujarati": "gu",
     "Bengali": "bn",
     "Punjabi": "pa",
+    "Urdu": "ur",
     "Odia": "or",
     "Assamese": "as",
-    "Urdu": "ur",
+    
+    # Other Major Indian Languages
     "Sanskrit": "sa",
-    "Konkani": "gom",          # Goan Konkani (Google Translate supported)
-    "Manipuri": "mni-Mtei",    # Meitei script
     "Nepali": "ne",
+    "Konkani": "kok",
+    "Manipuri": "mni",
+    "Sindhi": "sd",
     "Bodo": "brx",
     "Dogri": "doi",
-    "Kashmiri": "ks",
-    "Santali": "sat",
     "Maithili": "mai",
-    "Sindhi": "sd",
+    "Santali": "sat",
     
-    # New Dialects mapping to fallbacks or specific logic
-    "Tulu": "kn",
-    "Bhili": "hi",
-    "Gondi": "hi",
-    "Saurashtra": "ta",
-    "Bundelkhandi": "hi",      # Fallback to Hindi + Dictionary
-    "Bhojpuri": "hi",          # Fallback to Hindi + Dictionary
+    # Hindi Dialects & Regional Variations
+    "Bhojpuri": "hi",          # Eastern Hindi Dialect
+    "Bundelkhandi": "hi",      # Central India Dialect
+    "Awadhi": "hi",            # Eastern UP Dialect
+    "Magahi": "hi",            # Bihar Dialect
+    "Angika": "hi",            # Bihar/Jharkhand Dialect
+    "Chhattisgarhi": "hi",     # Chhattisgarh Dialect
+    "Bagheli": "hi",           # Madhya Pradesh Dialect
+    
+    # South Indian Dialects
+    "Gondi": "ta",             # Gondi Language (Dravidian)
+    "Tulu": "kn",              # Tulu Language (South Coastal)
+    "Kodava": "kn",            # Kodava Language
+    "Konkani-Devanagari": "kok",  # Konkani variant
+    
+    # Eastern Indian Dialects
+    "Angika": "hi",
+    "Bihari": "hi",
+    "Magadhi": "hi",
+    
+    # Western Indian Dialects
+    "Bhili": "gu",
+    "Warli": "gu",
+    
+    # North Eastern Dialects
+    "Khasi": "as",
+    "Mizo": "as",
+    "Nagamese": "as",
+    "Tripuri": "as",
+    
+    # Island & Coastal Languages
+    "Santhali": "sat",
+    "Ho": "sat",
+    
+    # Additional Sanskrit-derived Languages
+    "Pali": "sa",
+    
+    # Alternative spellings
+    "Hinglish": "hi",
+    "Oriya": "or",
+    "Assamese": "as",
+    "Meitei": "mni",
 }
 
 def translate_chunk(text: str, source_code: str, target_code: str, target_lang_name: str = "") -> str:
@@ -329,16 +367,68 @@ async def translate_pdf(
         headers={"Content-Disposition": f'attachment; filename="{download_name}"'}
     )
 
-@app.post("/api/translate/voice")
-async def translate_voice(file: UploadFile = File(...)):
+@app.get("/api/tts")
+def text_to_speech(text: str, lang: str):
     """
-    Mock endpoint for Voice STT and translation.
+    Proxy Google TTS requests to bypass CORS/referer blocks.
     """
-    await asyncio.sleep(2)
-    return {
-        "filename": file.filename,
-        "status": "success",
-        "original_text": "Hello, how are you doing today?",
-        "translated_text": "नमस्ते, आज आप कैसे हैं?",
-        "audio_url": "/mock_audio.mp3"
+    import urllib.request
+    import urllib.parse
+    from fastapi.responses import StreamingResponse
+
+    google_lang_codes = {
+        'English': 'en',
+        'Hindi': 'hi',
+        'Tamil': 'ta',
+        'Telugu': 'te',
+        'Kannada': 'kn',
+        'Malayalam': 'ml',
+        'Marathi': 'mr',
+        'Gujarati': 'gu',
+        'Bengali': 'bn',
+        'Punjabi': 'pa',
+        'Urdu': 'ur',
+        'Odia': 'or',
+        'Assamese': 'as',
+        'Sanskrit': 'sa',
+        'Nepali': 'ne',
+        'Konkani': 'hi',
+        'Manipuri': 'hi',
+        'Sindhi': 'sd',
+        'Bodo': 'hi',
+        'Dogri': 'hi',
+        'Maithili': 'hi',
+        'Santali': 'hi',
+        'Bhojpuri': 'hi',
+        'Bundelkhandi': 'hi',
+        'Awadhi': 'hi',
+        'Magahi': 'hi',
+        'Angika': 'hi',
+        'Chhattisgarhi': 'hi',
+        'Bagheli': 'hi',
+        'Gondi': 'te',
+        'Tulu': 'kn',
+        'Hinglish': 'hi'
     }
+    
+    lang_code = google_lang_codes.get(lang, "hi")
+    encoded_text = urllib.parse.quote(text)
+    url = f"https://translate.google.com/translate_tts?ie=UTF-8&tl={lang_code}&client=tw-ob&q={encoded_text}"
+    
+    req = urllib.request.Request(
+        url, 
+        headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.0.0 Safari/537.36'}
+    )
+    
+    try:
+        response = urllib.request.urlopen(req)
+        def iterfile():
+            while True:
+                chunk = response.read(4096)
+                if not chunk:
+                    break
+                yield chunk
+        return StreamingResponse(iterfile(), media_type="audio/mpeg")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"TTS Proxy Error: {str(e)}")
+

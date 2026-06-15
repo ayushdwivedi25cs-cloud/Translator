@@ -1,0 +1,1424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>भाषा (Bhasha) - Indian Language Translator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #ff671f; /* Saffron */
+            --primary-light: #ffa15e;
+            --primary-dark: #e04f00;
+            --accent: #0b1d7a; /* Navy Blue */
+            --success: #07823b; /* India Green */
+            --success-dark: #05632d;
+            --danger: #ef4444;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --bg-light: #fffdf9;
+            --bg-white: #ffffff;
+            --border-color: #f3dfd2;
+            --shadow-sm: 0 2px 4px rgba(255, 103, 31, 0.05);
+            --shadow-md: 0 6px 12px rgba(255, 103, 31, 0.08);
+            --shadow-lg: 0 15px 30px rgba(11, 29, 122, 0.1);
+            --india-saffron: #ff671f;
+            --india-green: #07823b;
+            --india-white: #ffffff;
+            --india-blue: #0b1d7a;
+        }
+
+        body {
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #fffcf9 0%, #f6fff6 50%, #f0f7ff 100%);
+            color: var(--text-dark);
+            min-height: 100vh;
+            padding: 20px;
+            padding-bottom: 180px; /* Space for monuments footer */
+            line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Tricolour Top Bar */
+        .tricolor-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .bar-saffron { background-color: var(--india-saffron); }
+        .bar-white { background-color: var(--india-white); }
+        .bar-green { background-color: var(--india-green); }
+
+        /* Bottom Monuments Silhouette */
+        .monuments-footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 140px;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+            opacity: 0.85;
+        }
+        .monuments-svg {
+            width: 100%;
+            height: 100%;
+            vertical-align: bottom;
+        }
+
+        /* Waveform Animation */
+        .waveform {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            height: 30px;
+            margin: 10px 0;
+            animation: fadeIn 0.3s ease;
+        }
+        .waveform.active {
+            display: flex;
+        }
+        .waveform .bar {
+            width: 4px;
+            height: 10px;
+            background-color: var(--india-green);
+            border-radius: 2px;
+            animation: bounceWave 0.8s ease-in-out infinite;
+        }
+        .waveform .bar:nth-child(2) { animation-delay: 0.1s; height: 18px; }
+        .waveform .bar:nth-child(3) { animation-delay: 0.2s; height: 24px; }
+        .waveform .bar:nth-child(4) { animation-delay: 0.3s; height: 14px; }
+        .waveform .bar:nth-child(5) { animation-delay: 0.4s; height: 28px; }
+        .waveform .bar:nth-child(6) { animation-delay: 0.3s; height: 16px; }
+        .waveform .bar:nth-child(7) { animation-delay: 0.2s; height: 22px; }
+        .waveform .bar:nth-child(8) { animation-delay: 0.1s; height: 12px; }
+        .waveform .bar:nth-child(9) { animation-delay: 0s; height: 8px; }
+
+        @keyframes bounceWave {
+            0%, 100% { transform: scaleY(1); }
+            50% { transform: scaleY(1.8); }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 20px auto 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: slideDown 0.6s ease-out;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.8) 100%);
+            border: 1px solid rgba(255, 103, 31, 0.15);
+            border-radius: 24px;
+            padding: 35px 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            backdrop-filter: blur(10px);
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('indian_monuments.png');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.09;
+            z-index: -1;
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 12px;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ashoka-chakra {
+            width: 55px;
+            height: 55px;
+            animation: rotateChakra 25s linear infinite;
+            transition: all 0.5s ease;
+            filter: drop-shadow(0 2px 5px rgba(11, 29, 122, 0.2));
+        }
+        .ashoka-chakra:hover {
+            animation-duration: 6s;
+            transform: scale(1.1);
+        }
+        @keyframes rotateChakra {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .header h1 {
+            font-size: 2.8em;
+            font-weight: 800;
+            background: linear-gradient(90deg, var(--india-saffron) 0%, var(--india-blue) 50%, var(--india-green) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+            letter-spacing: -1px;
+        }
+
+        .header p {
+            font-size: 1.15em;
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        .header-divider {
+            height: 4px;
+            width: 120px;
+            background: linear-gradient(90deg, var(--india-saffron), var(--india-blue), var(--india-green));
+            margin: 15px auto;
+            border-radius: 2px;
+        }
+
+        .tabs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+            gap: 12px;
+            margin-bottom: 40px;
+            max-width: 550px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .tab-button {
+            padding: 12px 20px;
+            background: var(--bg-white);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.95em;
+            color: var(--text-light);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .tab-button:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .tab-button.active {
+            background: linear-gradient(135deg, var(--india-saffron) 0%, var(--india-green) 100%);
+            border-color: transparent;
+            color: white;
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-4px);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .translator-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 30px;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        .panel {
+            background: var(--bg-white);
+            border-radius: 16px;
+            box-shadow: var(--shadow-lg);
+            padding: 32px;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .panel:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .panel-icon {
+            font-size: 2em;
+            opacity: 0.8;
+        }
+
+        .panel h2 {
+            font-size: 1.5em;
+            color: var(--primary);
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .language-selector {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        label {
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 0.95em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        select, textarea {
+            padding: 14px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 1em;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            background: var(--bg-white);
+            color: var(--text-dark);
+        }
+
+        select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%231e40af' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 40px;
+        }
+
+        select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 280px;
+            padding: 16px;
+            font-size: 1em;
+            line-height: 1.8;
+            transition: all 0.3s ease;
+        }
+
+        textarea:focus {
+            min-height: 320px;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.95em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .primary-btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            grid-column: 1 / -1;
+        }
+
+        .primary-btn:hover {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+        }
+
+        .secondary-btn {
+            background: var(--bg-light);
+            color: var(--text-dark);
+            border: 2px solid var(--border-color);
+        }
+
+        .secondary-btn:hover {
+            background: var(--border-color);
+            border-color: var(--primary);
+        }
+
+        .success-btn {
+            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+            color: white;
+        }
+
+        .success-btn:hover {
+            background: linear-gradient(135deg, #047857 0%, var(--success) 100%);
+        }
+
+        .swap-button {
+            background: linear-gradient(135deg, var(--accent) 0%, #d97706 100%);
+            color: white;
+            grid-column: 1 / -1;
+            font-size: 1.1em;
+        }
+
+        .swap-button:hover {
+            background: linear-gradient(135deg, #d97706 0%, var(--accent) 100%);
+        }
+
+        .char-count {
+            font-size: 0.85em;
+            color: var(--text-light);
+            margin-top: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .char-count-bar {
+            height: 4px;
+            background: var(--border-color);
+            border-radius: 2px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .char-count-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success) 0%, var(--accent) 100%);
+            transition: width 0.3s ease;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: var(--primary);
+            display: none;
+            font-weight: 600;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid var(--border-color);
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .file-upload {
+            border: 3px dashed var(--primary);
+            border-radius: 12px;
+            padding: 40px 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, rgba(30, 64, 175, 0.05) 0%, rgba(245, 158, 11, 0.05) 100%);
+        }
+
+        .file-upload:hover {
+            background: linear-gradient(135deg, rgba(30, 64, 175, 0.1) 0%, rgba(245, 158, 11, 0.1) 100%);
+            border-color: var(--primary-light);
+        }
+
+        .file-upload input {
+            display: none;
+        }
+
+        .file-upload-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .file-upload-text {
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        .file-upload-subtext {
+            color: var(--text-light);
+            font-size: 0.9em;
+            margin-top: 8px;
+        }
+
+        .history-list {
+            list-style: none;
+            max-height: 500px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .history-item {
+            padding: 16px;
+            background: var(--bg-light);
+            border-radius: 10px;
+            border-left: 4px solid var(--primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .history-item:hover {
+            background: linear-gradient(135deg, rgba(30, 64, 175, 0.05) 0%, rgba(245, 158, 11, 0.05) 100%);
+            transform: translateX(8px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .history-content {
+            flex: 1;
+        }
+
+        .history-langs {
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 0.9em;
+            margin-bottom: 6px;
+        }
+
+        .history-text {
+            color: var(--text-dark);
+            font-size: 0.95em;
+            margin-bottom: 4px;
+        }
+
+        .history-meta {
+            font-size: 0.8em;
+            color: var(--text-light);
+        }
+
+        .history-delete {
+            background: var(--danger);
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 12px;
+        }
+
+        .history-delete:hover {
+            background: #dc2626;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: white;
+            color: var(--text-dark);
+            padding: 16px 24px;
+            border-radius: 10px;
+            box-shadow: var(--shadow-lg);
+            z-index: 1000;
+            animation: slideInRight 0.4s ease-out;
+            border-left: 4px solid var(--success);
+            font-weight: 600;
+            max-width: 400px;
+        }
+
+        .toast.error {
+            border-left-color: var(--danger);
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .error-message {
+            color: var(--danger);
+            background: rgba(239, 68, 68, 0.1);
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-top: 12px;
+            display: none;
+            border-left: 4px solid var(--danger);
+            font-size: 0.95em;
+        }
+
+        .error-message.active {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes bounceIn {
+            0% { opacity: 0; transform: scale(0.3) translateY(20px); }
+            50% { opacity: 1; }
+            100% { transform: scale(1) translateY(0); }
+        }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 10px rgba(30, 64, 175, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(30, 64, 175, 0.8), 0 0 30px rgba(245, 158, 11, 0.6); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        @media (max-width: 768px) {
+            .translator-container {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .panel {
+                padding: 20px;
+            }
+
+            textarea {
+                min-height: 200px;
+            }
+
+            .tabs {
+                grid-template-columns: 1fr;
+            }
+
+            .controls {
+                grid-template-columns: 1fr;
+            }
+
+            .toast {
+                left: 10px;
+                right: 10px;
+                bottom: 20px;
+                max-width: none;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-light);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-light);
+        }
+
+
+
+    </style>
+</head>
+<body>
+    <div class="tricolor-bar">
+        <div class="bar-saffron"></div>
+        <div class="bar-white"></div>
+        <div class="bar-green"></div>
+    </div>
+    <div class="container">
+        <div class="header">
+            <div class="header-top">
+                <div class="header-logo">
+                    <svg class="ashoka-chakra" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="45" stroke="#0b1d7a" stroke-width="4" fill="none" />
+                        <circle cx="50" cy="50" r="8" fill="#0b1d7a" />
+                        <g stroke="#0b1d7a" stroke-width="2">
+                            <line x1="50" y1="50" x2="50" y2="5" />
+                            <line x1="50" y1="50" x2="50" y2="95" />
+                            <line x1="50" y1="50" x2="5" y2="50" />
+                            <line x1="50" y1="50" x2="95" y2="50" />
+                            <line x1="50" y1="50" x2="50" y2="5" transform="rotate(15 50 50)" />
+                            <line x1="50" y1="50" x2="50" y2="5" transform="rotate(30 50 50)" />
+                            <line x1="50" y1="50" x2="50" y2="5" transform="rotate(45 50 50)" />
+                            <line x1="50" y1="50" x2="50" y2="5" transform="rotate(60 50 50)" />
+                            <line x1="50" y1="50" x2="50" y2="5" transform="rotate(75 50 50)" />
+                            <line x1="50" y1="50" x2="50" y2="5" transform="rotate(105 50 50)" />
+                            <line x1="50" y1="50" x2="50" y2="5" transform="rotate(120 50 50)" />
+                            <line x1="50" y1="50" x2="50" y2="5" transform="rotate(135 50 50)" />
+                            <line x1="50" y1="50" x2="50" y2="5" transform="rotate(150 50 50)" />
+                            <line x1="50" y1="50" x2="50" y2="5" transform="rotate(165 50 50)" />
+                            <line x1="50" y1="50" x2="50" y2="5" transform="rotate(195 50 50)" />
+                            <line x1="50" y1="50" x2="50" y2="5" transform="rotate(210 50 50)" />
+                            <line x1="50" y1="50" x2="50" y2="5" transform="rotate(225 50 50)" />
+                            <line x1="50" y1="50" x2="50" y2="5" transform="rotate(240 50 50)" />
+                            <line x1="50" y1="50" x2="50" y2="5" transform="rotate(255 50 50)" />
+                            <line x1="50" y1="50" x2="50" y2="5" transform="rotate(285 50 50)" />
+                            <line x1="50" y1="50" x2="50" y2="5" transform="rotate(300 50 50)" />
+                            <line x1="50" y1="50" x2="50" y2="5" transform="rotate(315 50 50)" />
+                            <line x1="50" y1="50" x2="50" y2="5" transform="rotate(330 50 50)" />
+                            <line x1="50" y1="50" x2="50" y2="5" transform="rotate(345 50 50)" />
+                        </g>
+                        <circle cx="50" cy="50" r="41" stroke="#0b1d7a" stroke-width="1" fill="none" stroke-dasharray="1 1.5" />
+                    </svg>
+                </div>
+                <h1>भाषा</h1>
+            </div>
+            <p>Indian Language Translator - All Indian Languages & Dialects</p>
+            <div class="header-divider"></div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-button active" onclick="switchTab(event, 'text-tab')">📝 Text</button>
+            <button class="tab-button" onclick="switchTab(event, 'file-tab')">📄 Documents</button>
+            <button class="tab-button" onclick="switchTab(event, 'history-tab')">📋 History</button>
+        </div>
+
+        <div id="text-tab" class="tab-content active">
+            <div class="translator-container">
+                <div class="panel">
+                    <div class="panel-header">
+                        <span class="panel-icon">📥</span>
+                        <h2>Source Text</h2>
+                    </div>
+                    <div class="language-selector">
+                        <label for="source-lang">🌐 From Language:</label>
+                        <select id="source-lang" onchange="translateRealTime()">
+                            <optgroup label="International">
+                                <option value="English">English</option>
+                            </optgroup>
+                            <optgroup label="Major Languages">
+                                <option value="Hindi">Hindi (हिंदी)</option>
+                                <option value="Tamil">Tamil (தமிழ்)</option>
+                                <option value="Telugu">Telugu (తెలుగు)</option>
+                                <option value="Kannada">Kannada (ಕನ್ನಡ)</option>
+                                <option value="Malayalam">Malayalam (മലയാളം)</option>
+                                <option value="Marathi">Marathi (मराठी)</option>
+                                <option value="Gujarati">Gujarati (ગુજરાતી)</option>
+                                <option value="Bengali">Bengali (বাংলা)</option>
+                                <option value="Punjabi">Punjabi (ਪੰਜਾਬੀ)</option>
+                                <option value="Urdu">Urdu (اردو)</option>
+                                <option value="Odia">Odia (ଓଡ଼ିଆ)</option>
+                                <option value="Assamese">Assamese (অসমীয়া)</option>
+                            </optgroup>
+                            <optgroup label="Other Languages">
+                                <option value="Sanskrit">Sanskrit (संस्कृत)</option>
+                                <option value="Nepali">Nepali (नेपाली)</option>
+                                <option value="Konkani">Konkani (कोंकणी)</option>
+                                <option value="Manipuri">Manipuri (ମଣିପୁରୀ)</option>
+                                <option value="Sindhi">Sindhi (سنڌي)</option>
+                                <option value="Bodo">Bodo (बड़ो)</option>
+                                <option value="Dogri">Dogri (डोगरी)</option>
+                                <option value="Maithili">Maithili (मैथिली)</option>
+                                <option value="Santali">Santali (ᱥᱟᱱᱛᱟᱞᱤ)</option>
+                            </optgroup>
+                            <optgroup label="Dialects">
+                                <option value="Bhojpuri">Bhojpuri (भोजपुरी)</option>
+                                <option value="Bundelkhandi">Bundelkhandi (बुंदेलखंडी)</option>
+                                <option value="Awadhi">Awadhi (अवधी)</option>
+                                <option value="Magahi">Magahi (मगही)</option>
+                                <option value="Angika">Angika (अंगिका)</option>
+                                <option value="Chhattisgarhi">Chhattisgarhi (छत्तीसगढ़ी)</option>
+                                <option value="Bagheli">Bagheli (बघेली)</option>
+                                <option value="Gondi">Gondi (गोंडी)</option>
+                                <option value="Tulu">Tulu (ತುಳು)</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    <textarea id="source-text" placeholder="Type or paste text here... (Max 5000 characters)" oninput="updateCharCount(); translateRealTime();"></textarea>
+                    <div class="char-count">
+                        <span>Characters: <strong id="source-count">0</strong>/5000</span>
+                    </div>
+                    <div class="char-count-bar">
+                        <div class="char-count-fill" id="source-fill"></div>
+                    </div>
+                    <div class="controls">
+                        <button class="secondary-btn" onclick="clearSource()">🗑️ Clear</button>
+                        <button class="success-btn" onclick="copySource()">📋 Copy</button>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-header">
+                        <span class="panel-icon">📤</span>
+                        <h2>Translated Text</h2>
+                    </div>
+                    <div class="language-selector">
+                        <label for="target-lang">🌐 To Language:</label>
+                        <select id="target-lang" onchange="translateRealTime()">
+                            <optgroup label="International">
+                                <option value="English">English</option>
+                            </optgroup>
+                            <optgroup label="Major Languages">
+                                <option value="Hindi" selected>Hindi (हिंदी)</option>
+                                <option value="Tamil">Tamil (தமிழ்)</option>
+                                <option value="Telugu">Telugu (తెలుగు)</option>
+                                <option value="Kannada">Kannada (ಕನ್ನಡ)</option>
+                                <option value="Malayalam">Malayalam (മലയാളം)</option>
+                                <option value="Marathi">Marathi (मराठी)</option>
+                                <option value="Gujarati">Gujarati (ગુજરાતી)</option>
+                                <option value="Bengali">Bengali (বাংলা)</option>
+                                <option value="Punjabi">Punjabi (ਪੰਜਾਬੀ)</option>
+                                <option value="Urdu">Urdu (اردو)</option>
+                                <option value="Odia">Odia (ଓଡ଼ିଆ)</option>
+                                <option value="Assamese">Assamese (অসমীয়া)</option>
+                            </optgroup>
+                            <optgroup label="Other Languages">
+                                <option value="Sanskrit">Sanskrit (संस्कृत)</option>
+                                <option value="Nepali">Nepali (नेपाली)</option>
+                                <option value="Konkani">Konkani (कोंकणी)</option>
+                                <option value="Manipuri">Manipuri (ମଣିପୁରୀ)</option>
+                                <option value="Sindhi">Sindhi (سنڌي)</option>
+                                <option value="Bodo">Bodo (बड़ो)</option>
+                                <option value="Dogri">Dogri (डोगरी)</option>
+                                <option value="Maithili">Maithili (मैथिली)</option>
+                                <option value="Santali">Santali (ᱥᱟᱱᱛᱟᱞᱤ)</option>
+                            </optgroup>
+                            <optgroup label="Dialects">
+                                <option value="Bhojpuri">Bhojpuri (भोजपुरी)</option>
+                                <option value="Bundelkhandi">Bundelkhandi (बुंदेलखंडी)</option>
+                                <option value="Awadhi">Awadhi (अवधी)</option>
+                                <option value="Magahi">Magahi (मगही)</option>
+                                <option value="Angika">Angika (अंगिका)</option>
+                                <option value="Chhattisgarhi">Chhattisgarhi (छत्तीसगढ़ी)</option>
+                                <option value="Bagheli">Bagheli (बघेली)</option>
+                                <option value="Gondi">Gondi (गोंडी)</option>
+                                <option value="Tulu">Tulu (ತುಳು)</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    <textarea id="target-text" placeholder="Translation will appear here..." readonly></textarea>
+                    <div class="char-count">
+                        <span>Characters: <strong id="target-count">0</strong></span>
+                    </div>
+                    <div class="controls">
+                        <button class="success-btn" onclick="copyTarget()">📋 Copy</button>
+                        <button class="accent-btn" id="text-speak-btn" onclick="speakTargetText()" style="background: linear-gradient(135deg, var(--india-blue) 0%, var(--primary) 100%); color: white;">🔊 Speak</button>
+                        <button class="swap-button" onclick="swapLanguages()">🔄 Swap Languages</button>
+                    </div>
+                </div>
+            </div>
+            <div class="error-message" id="error-message"></div>
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <span>Translating...</span>
+            </div>
+        </div>
+
+
+
+        <div id="file-tab" class="tab-content">
+            <div class="panel">
+                <div class="panel-header">
+                    <span class="panel-icon">📄</span>
+                    <h2>Translate Documents</h2>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                    <div class="language-selector">
+                        <label for="file-source-lang">From:</label>
+                        <select id="file-source-lang">
+                            <optgroup label="International">
+                                <option value="English">English</option>
+                            </optgroup>
+                            <optgroup label="Major Languages">
+                                <option value="Hindi">Hindi (हिंदी)</option>
+                                <option value="Tamil">Tamil (தமிழ்)</option>
+                                <option value="Telugu">Telugu (తెలుగు)</option>
+                                <option value="Kannada">Kannada (ಕನ್ನಡ)</option>
+                                <option value="Malayalam">Malayalam (മലയാളം)</option>
+                                <option value="Marathi">Marathi (मराठी)</option>
+                                <option value="Gujarati">Gujarati (ગુજરાતી)</option>
+                                <option value="Bengali">Bengali (বাংলা)</option>
+                                <option value="Punjabi">Punjabi (ਪੰਜਾਬੀ)</option>
+                                <option value="Urdu">Urdu (اردو)</option>
+                                <option value="Odia">Odia (ଓଡ଼ିଆ)</option>
+                                <option value="Assamese">Assamese (অসমীয়া)</option>
+                            </optgroup>
+                            <optgroup label="Other Languages">
+                                <option value="Sanskrit">Sanskrit (संस्कृत)</option>
+                                <option value="Nepali">Nepali (नेपाली)</option>
+                                <option value="Konkani">Konkani (कोंकणी)</option>
+                                <option value="Manipuri">Manipuri (ମଣିପୁରୀ)</option>
+                                <option value="Sindhi">Sindhi (سنڌي)</option>
+                                <option value="Bodo">Bodo (बड़ो)</option>
+                                <option value="Dogri">Dogri (डोगरी)</option>
+                                <option value="Maithili">Maithili (मैथिली)</option>
+                                <option value="Santali">Santali (ᱥᱟᱱᱛᱟᱞᱤ)</option>
+                            </optgroup>
+                            <optgroup label="Dialects">
+                                <option value="Bhojpuri">Bhojpuri (भोजपुरी)</option>
+                                <option value="Bundelkhandi">Bundelkhandi (बुंदेलखंडी)</option>
+                                <option value="Awadhi">Awadhi (अवधी)</option>
+                                <option value="Magahi">Magahi (मगही)</option>
+                                <option value="Angika">Angika (अंगिका)</option>
+                                <option value="Chhattisgarhi">Chhattisgarhi (छत्तीसगढ़ी)</option>
+                                <option value="Bagheli">Bagheli (बघेली)</option>
+                                <option value="Gondi">Gondi (गोंडी)</option>
+                                <option value="Tulu">Tulu (ತುಳು)</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    <div class="language-selector">
+                        <label for="file-target-lang">To:</label>
+                        <select id="file-target-lang">
+                            <option value="Hindi" selected>Hindi (हिंदी)</option>
+                            <option value="Tamil">Tamil (தമிழ்)</option>
+                            <option value="Telugu">Telugu (తెలుగు)</option>
+                            <option value="Kannada">Kannada (ಕನ್ನಡ)</option>
+                            <option value="Malayalam">Malayalam (മലയാളം)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="file-upload" onclick="document.getElementById('file-input').click()">
+                    <input id="file-input" type="file" accept=".pdf" onchange="handleFileUpload()">
+                    <span class="file-upload-icon">📁</span>
+                    <p class="file-upload-text">Click to upload or drag & drop</p>
+                    <p class="file-upload-subtext">PDF files up to 10MB</p>
+                </div>
+                <div id="file-error" class="error-message"></div>
+            </div>
+        </div>
+
+        <div id="history-tab" class="tab-content">
+            <div class="panel">
+                <div class="panel-header">
+                    <span class="panel-icon">📋</span>
+                    <h2>Translation History</h2>
+                </div>
+                <ul class="history-list" id="history-list">
+                    <li style="text-align: center; color: var(--text-light); padding: 40px 20px;">
+                        No translations yet. Start translating to see history!
+                    </li>
+                </ul>
+                <button class="secondary-btn" onclick="clearHistory()" style="width: 100%; margin-top: 20px;">🗑️ Clear All History</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:8000';
+        let translationHistory = JSON.parse(localStorage.getItem('translationHistory')) || [];
+        let translationTimeout;
+        
+        // Speech Synthesis Setup (TTS)
+        const speechSynthesis = window.speechSynthesis;
+        let activeAudio = null; // store current audio object to cancel if needed
+        
+        function speakTargetText() {
+            const text = document.getElementById('target-text').value.trim();
+            if (!text) {
+                showToast('⚠️ No translation to speak');
+                return;
+            }
+            
+            const targetLang = document.getElementById('target-lang').value;
+            const speakBtn = document.getElementById('text-speak-btn');
+            
+            // Stop any ongoing playbacks
+            if (activeAudio) {
+                activeAudio.onended = null;
+                activeAudio.onerror = null;
+                activeAudio.pause();
+            } else {
+                activeAudio = new Audio();
+            }
+            if (speechSynthesis) {
+                speechSynthesis.cancel();
+            }
+            
+            speakBtn.classList.add('playing');
+            speakBtn.textContent = '🔊 Playing...';
+            
+            // Google TTS code mapping
+            const googleLangCodes = {
+                'English': 'en',
+                'Hindi': 'hi',
+                'Tamil': 'ta',
+                'Telugu': 'te',
+                'Kannada': 'kn',
+                'Malayalam': 'ml',
+                'Marathi': 'mr',
+                'Gujarati': 'gu',
+                'Bengali': 'bn',
+                'Punjabi': 'pa',
+                'Urdu': 'ur',
+                'Odia': 'or',
+                'Assamese': 'as',
+                'Sanskrit': 'sa',
+                'Nepali': 'ne',
+                'Konkani': 'hi',
+                'Manipuri': 'hi',
+                'Sindhi': 'sd',
+                'Bodo': 'hi',
+                'Dogri': 'hi',
+                'Maithili': 'hi',
+                'Santali': 'hi',
+                'Bhojpuri': 'hi',
+                'Bundelkhandi': 'hi',
+                'Awadhi': 'hi',
+                'Magahi': 'hi',
+                'Angika': 'hi',
+                'Chhattisgarhi': 'hi',
+                'Bagheli': 'hi',
+                'Gondi': 'te',
+                'Tulu': 'kn',
+                'Hinglish': 'hi'
+            };
+
+            const ttsUrl = `${API_URL}/api/tts?text=${encodeURIComponent(text)}&lang=${encodeURIComponent(targetLang)}`;
+            
+            activeAudio.src = ttsUrl;
+            
+            activeAudio.onended = () => {
+                speakBtn.classList.remove('playing');
+                speakBtn.textContent = '🔊 Speak';
+            };
+            
+            activeAudio.onerror = (e) => {
+                console.error('Google TTS error, using browser synthesis fallback:', e);
+                fallbackToBrowserSpeechText(text, targetLang, speakBtn);
+            };
+
+            activeAudio.play().catch((error) => {
+                console.error('Audio play failed, using browser synthesis fallback:', error);
+                fallbackToBrowserSpeechText(text, targetLang, speakBtn);
+            });
+        }
+
+        function fallbackToBrowserSpeechText(text, targetLang, speakBtn) {
+            if (!speechSynthesis) {
+                speakBtn.classList.remove('playing');
+                speakBtn.textContent = '🔊 Speak';
+                return;
+            }
+            
+            const utterance = new SpeechSynthesisUtterance(text);
+            const languageCodes = {
+                'English': 'en-US',
+                'Hindi': 'hi-IN',
+                'Tamil': 'ta-IN',
+                'Telugu': 'te-IN',
+                'Kannada': 'kn-IN',
+                'Malayalam': 'ml-IN',
+                'Marathi': 'mr-IN',
+                'Gujarati': 'gu-IN',
+                'Bengali': 'bn-IN',
+                'Punjabi': 'pa-IN',
+                'Urdu': 'ur-IN'
+            };
+            
+            utterance.lang = languageCodes[targetLang] || 'hi-IN';
+            utterance.rate = 1;
+            utterance.pitch = 1;
+            utterance.volume = 1;
+            
+            utterance.onend = () => {
+                speakBtn.classList.remove('playing');
+                speakBtn.textContent = '🔊 Speak';
+            };
+            
+            utterance.onerror = (event) => {
+                speakBtn.classList.remove('playing');
+                speakBtn.textContent = '🔊 Speak';
+            };
+            
+            speechSynthesis.speak(utterance);
+        }
+
+        function switchTab(event, tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function translateRealTime() {
+            clearTimeout(translationTimeout);
+            const sourceText = document.getElementById('source-text').value.trim();
+            
+            if (!sourceText) {
+                document.getElementById('target-text').value = '';
+                return;
+            }
+
+            translationTimeout = setTimeout(() => {
+                translate();
+            }, 400);
+        }
+
+        async function translate() {
+            const sourceText = document.getElementById('source-text').value.trim();
+            const sourceLang = document.getElementById('source-lang').value;
+            const targetLang = document.getElementById('target-lang').value;
+            const errorDiv = document.getElementById('error-message');
+
+            if (!sourceText) {
+                document.getElementById('target-text').value = '';
+                return;
+            }
+
+            if (sourceText.length > 5000) {
+                showError('Text exceeds 5000 characters limit');
+                return;
+            }
+
+            showLoading(true);
+            errorDiv.classList.remove('active');
+
+            try {
+                const response = await fetch(`${API_URL}/api/translate/text`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        text: sourceText,
+                        source_lang: sourceLang,
+                        target_lang: targetLang,
+                        mode: 'Professional'
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API error: ${response.status}`);
+                }
+
+                const data = await response.json();
+                document.getElementById('target-text').value = data.translated_text;
+                document.getElementById('target-count').textContent = data.translated_text.length;
+
+                addToHistory(sourceText, data.translated_text, sourceLang, targetLang);
+                showToast('✨ Translation complete!');
+            } catch (error) {
+                showError(`⚠️ Translation failed: ${error.message}`);
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        function updateCharCount() {
+            const count = document.getElementById('source-text').value.length;
+            document.getElementById('source-count').textContent = count;
+            const percent = (count / 5000) * 100;
+            document.getElementById('source-fill').style.width = percent + '%';
+        }
+
+        function clearSource() {
+            document.getElementById('source-text').value = '';
+            document.getElementById('target-text').value = '';
+            document.getElementById('source-count').textContent = '0';
+            document.getElementById('target-count').textContent = '0';
+            document.getElementById('source-fill').style.width = '0%';
+        }
+
+        function copySource() {
+            const text = document.getElementById('source-text').value;
+            if (text) {
+                navigator.clipboard.writeText(text);
+                showToast('✅ Source text copied!');
+            }
+        }
+
+        function copyTarget() {
+            const text = document.getElementById('target-text').value;
+            if (text) {
+                navigator.clipboard.writeText(text);
+                showToast('✅ Translated text copied!');
+            }
+        }
+
+        function swapLanguages() {
+            const sourceLang = document.getElementById('source-lang').value;
+            const targetLang = document.getElementById('target-lang').value;
+
+            document.getElementById('source-lang').value = targetLang;
+            document.getElementById('target-lang').value = sourceLang;
+
+            const sourceText = document.getElementById('source-text').value;
+            document.getElementById('source-text').value = document.getElementById('target-text').value;
+            document.getElementById('target-text').value = sourceText;
+
+            updateCharCount();
+            if (document.getElementById('source-text').value.trim()) {
+                translateRealTime();
+            }
+        }
+
+        function showLoading(show, message = "Translating...") {
+            const loadingEl = document.getElementById('loading');
+            loadingEl.querySelector('span').textContent = message;
+            loadingEl.classList.toggle('active', show);
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('error-message');
+            errorDiv.textContent = message;
+            errorDiv.classList.add('active');
+        }
+
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.animation = 'slideInRight 0.4s ease-out reverse';
+                setTimeout(() => toast.remove(), 400);
+            }, 2500);
+        }
+
+        function addToHistory(source, target, sourceLang, targetLang) {
+            const entry = {
+                source: source.substring(0, 60),
+                target: target.substring(0, 60),
+                sourceLang,
+                targetLang,
+                timestamp: new Date().toLocaleTimeString()
+            };
+
+            translationHistory.unshift(entry);
+            if (translationHistory.length > 30) {
+                translationHistory.pop();
+            }
+            localStorage.setItem('translationHistory', JSON.stringify(translationHistory));
+            displayHistory();
+        }
+
+        function displayHistory() {
+            const historyList = document.getElementById('history-list');
+            if (translationHistory.length === 0) {
+                historyList.innerHTML = '<li style="text-align: center; color: var(--text-light); padding: 40px 20px;">No translations yet. Start translating to see history!</li>';
+                return;
+            }
+
+            historyList.innerHTML = translationHistory.map((item, index) => `
+                <li class="history-item" onclick="restoreHistoryItem(${index})">
+                    <div class="history-content">
+                        <div class="history-langs">🔀 ${item.sourceLang} → ${item.targetLang}</div>
+                        <div class="history-text">📍 ${item.source}${item.source.length === 60 ? '...' : ''}</div>
+                        <div class="history-text">✓ ${item.target}${item.target.length === 60 ? '...' : ''}</div>
+                        <div class="history-meta">⏰ ${item.timestamp}</div>
+                    </div>
+                    <button class="history-delete" onclick="deleteHistoryItem(event, ${index})">✕</button>
+                </li>
+            `).join('');
+        }
+
+        function restoreHistoryItem(index) {
+            const item = translationHistory[index];
+            document.getElementById('source-text').value = item.source;
+            document.getElementById('source-lang').value = item.sourceLang;
+            document.getElementById('target-lang').value = item.targetLang;
+            document.querySelectorAll('.tab-button')[0].click();
+            updateCharCount();
+            translateRealTime();
+        }
+
+        function deleteHistoryItem(event, index) {
+            event.stopPropagation();
+            translationHistory.splice(index, 1);
+            localStorage.setItem('translationHistory', JSON.stringify(translationHistory));
+            displayHistory();
+            showToast('🗑️ History item deleted');
+        }
+
+        function clearHistory() {
+            if (confirm('Are you sure? This will clear all translation history.')) {
+                translationHistory = [];
+                localStorage.removeItem('translationHistory');
+                displayHistory();
+                showToast('🗑️ History cleared!');
+            }
+        }
+
+        async function handleFileUpload() {
+            const fileInput = document.getElementById('file-input');
+            const file = fileInput.files[0];
+
+            if (!file) return;
+
+            if (file.type !== 'application/pdf') {
+                showError('Only PDF files are supported');
+                return;
+            }
+
+            if (file.size > 10 * 1024 * 1024) {
+                showError('File size must be less than 10MB');
+                return;
+            }
+
+            showLoading(true, 'Translating, please wait...');
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('source_lang', document.getElementById('file-source-lang').value);
+            formData.append('target_lang', document.getElementById('file-target-lang').value);
+
+            try {
+                const response = await fetch(`${API_URL}/api/translate/pdf`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Upload failed: ${response.status}`);
+                }
+
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${file.name.split('.')[0]}_translated.pdf`;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                a.remove();
+
+                showToast('📄 PDF translated & downloaded!');
+            } catch (error) {
+                showError(`PDF translation failed: ${error.message}`);
+            } finally {
+                showLoading(false);
+                fileInput.value = '';
+            }
+        }
+
+        // Initialize
+        displayHistory();
+    </script>
+    <!-- Indian Monuments Footer Silhouette -->
+    <div class="monuments-footer">
+        <svg viewBox="0 0 1200 150" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" class="monuments-svg">
+            <!-- India Gate -->
+            <path d="M 680 150 L 680 90 L 690 90 L 690 85 L 695 85 L 695 60 L 705 60 L 705 55 L 710 55 L 710 50 L 740 50 L 740 55 L 745 55 L 745 60 L 755 60 L 755 85 L 760 85 L 760 90 L 770 90 L 770 150 Z" fill="var(--india-saffron)" opacity="0.15" />
+            <path d="M 698 150 L 698 105 A 27 27 0 0 1 752 105 L 752 150 Z" fill="var(--bg-light)" opacity="0.9" />
+            
+            <!-- Taj Mahal -->
+            <path d="M 350 150 L 350 110 L 370 110 L 370 100 L 368 100 L 368 85 L 398 85 L 398 100 L 396 100 L 396 110 L 454 110 L 454 100 L 452 100 L 452 85 L 482 85 L 482 100 L 480 100 L 480 110 L 500 110 L 500 150 Z" fill="var(--india-green)" opacity="0.15" />
+            <path d="M 405 85 L 405 80 C 405 65, 412 55, 425 55 C 438 55, 445 65, 445 80 L 445 85 Z" fill="var(--india-green)" opacity="0.2" />
+            <path d="M 378 85 L 378 82 C 378 75, 382 70, 388 70 C 394 70, 398 75, 398 82 L 398 85 Z" fill="var(--india-green)" opacity="0.2" />
+            <path d="M 452 85 L 452 82 C 452 75, 456 70, 462 70 C 468 70, 472 75, 472 82 L 472 85 Z" fill="var(--india-green)" opacity="0.2" />
+            <path d="M 335 150 L 340 150 L 340 60 L 335 60 Z" fill="var(--india-green)" opacity="0.12" />
+            <path d="M 510 150 L 515 150 L 515 60 L 510 60 Z" fill="var(--india-green)" opacity="0.12" />
+
+            <!-- Qutub Minar -->
+            <path d="M 120 150 L 135 40 L 140 40 L 140 35 L 133 35 L 133 30 L 142 30 L 145 150 Z" fill="var(--india-saffron)" opacity="0.1" />
+            
+            <!-- Lotus Temple curves -->
+            <path d="M 900 150 Q 920 100 940 120 Q 960 90 980 130 Q 1000 110 1020 150 Z" fill="var(--india-green)" opacity="0.08" />
+            
+            <!-- Waves -->
+            <path d="M 0 135 Q 300 120 600 135 T 1200 135 L 1200 150 L 0 150 Z" fill="var(--india-blue)" opacity="0.05" />
+        </svg>
+    </div>
+</body>
+</html>
