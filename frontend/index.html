@@ -1,470 +1,869 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="light-theme">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>भाषा (Bhasha) - Indian Language Translator</title>
+    <title>Bhasha (भाषा) - Indian Language Translator</title>
+    
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Outfit:wght@300;400;500;600;700;800&family=Rozha+One&family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
+    
     <style>
+        /* Modern Design System with Indian Cultural Theme */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            transition: background-color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease, color 0.3s ease;
         }
 
         :root {
-            --primary: #ff671f; /* Saffron */
-            --primary-light: #ffa15e;
-            --primary-dark: #e04f00;
-            --accent: #0b1d7a; /* Navy Blue */
-            --success: #07823b; /* India Green */
-            --success-dark: #05632d;
-            --danger: #ef4444;
-            --text-dark: #1f2937;
-            --text-light: #6b7280;
-            --bg-light: #fffdf9;
-            --bg-white: #ffffff;
-            --border-color: #f3dfd2;
-            --shadow-sm: 0 2px 4px rgba(255, 103, 31, 0.05);
-            --shadow-md: 0 6px 12px rgba(255, 103, 31, 0.08);
-            --shadow-lg: 0 15px 30px rgba(11, 29, 122, 0.1);
-            --india-saffron: #ff671f;
-            --india-green: #07823b;
-            --india-white: #ffffff;
-            --india-blue: #0b1d7a;
+            /* Light Theme: Tejas (Saffron & Ivory) */
+            --bg-gradient: linear-gradient(135deg, #fffcf6 0%, #f6fbf6 50%, #f2f7fc 100%);
+            --panel-bg: rgba(255, 255, 255, 0.82);
+            --panel-border: rgba(212, 175, 55, 0.28);
+            --text-main: #1e293b;
+            --text-sub: #475569;
+            --saffron: #ff671f;
+            --saffron-light: #ff8e53;
+            --saffron-dark: #cc4e0e;
+            --green: #07823b;
+            --green-light: #10a852;
+            --navy: #0b1d7a;
+            --gold: #d4af37;
+            --gold-glow: rgba(212, 175, 55, 0.2);
+            --shadow-sm: 0 4px 10px rgba(11, 29, 122, 0.04);
+            --shadow-md: 0 10px 25px rgba(255, 103, 31, 0.08);
+            --shadow-lg: 0 20px 45px rgba(11, 29, 122, 0.09);
+            --textarea-bg: #ffffff;
+            --select-bg: #ffffff;
+            --monument-opacity: 0.85;
+            --monument-fill-1: rgba(255, 103, 31, 0.16);
+            --monument-fill-2: rgba(7, 130, 59, 0.16);
+            --monument-fill-3: rgba(11, 29, 122, 0.12);
+            --ashoka-chakra-color: #0b1d7a;
+            --chakra-glow: rgba(11, 29, 122, 0.2);
+        }
+
+        .dark-theme {
+            /* Dark Theme: Ratri (Midnight Indigo & Gold) */
+            --bg-gradient: linear-gradient(135deg, #090a10 0%, #0d1222 50%, #091410 100%);
+            --panel-bg: rgba(15, 22, 42, 0.75);
+            --panel-border: rgba(212, 175, 55, 0.18);
+            --text-main: #f8fafc;
+            --text-sub: #94a3b8;
+            --saffron: #ffa06e;
+            --saffron-light: #ffb894;
+            --saffron-dark: #e05c1d;
+            --green: #34d399;
+            --green-light: #6ee7b7;
+            --navy: #3b82f6;
+            --gold: #fbbf24;
+            --gold-glow: rgba(251, 191, 36, 0.25);
+            --shadow-sm: 0 4px 10px rgba(0, 0, 0, 0.25);
+            --shadow-md: 0 10px 25px rgba(0, 0, 0, 0.35);
+            --shadow-lg: 0 20px 45px rgba(0, 0, 0, 0.45);
+            --textarea-bg: #111827;
+            --select-bg: #1e293b;
+            --monument-opacity: 0.5;
+            --monument-fill-1: rgba(255, 103, 31, 0.25);
+            --monument-fill-2: rgba(52, 211, 153, 0.25);
+            --monument-fill-3: rgba(59, 130, 246, 0.2);
+            --ashoka-chakra-color: #fbbf24;
+            --chakra-glow: rgba(251, 191, 36, 0.3);
         }
 
         body {
             font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #fffcf9 0%, #f6fff6 50%, #f0f7ff 100%);
-            color: var(--text-dark);
+            background: var(--bg-gradient);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            color: var(--text-main);
             min-height: 100vh;
-            padding: 20px;
-            padding-bottom: 180px; /* Space for monuments footer */
+            padding: 24px;
+            padding-bottom: 200px; /* Space for monuments footer */
             line-height: 1.6;
             position: relative;
             overflow-x: hidden;
         }
 
-        /* Tricolour Top Bar */
+        /* Tricolour Header Glow Bar */
         .tricolor-bar {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            height: 6px;
+            height: 7px;
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
             z-index: 1000;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
         }
-        .bar-saffron { background-color: var(--india-saffron); }
-        .bar-white { background-color: var(--india-white); }
-        .bar-green { background-color: var(--india-green); }
-
-        /* Bottom Monuments Silhouette */
-        .monuments-footer {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 140px;
-            pointer-events: none;
-            z-index: 1;
-            overflow: hidden;
-            opacity: 0.85;
-        }
-        .monuments-svg {
-            width: 100%;
-            height: 100%;
-            vertical-align: bottom;
-        }
-
-        /* Waveform Animation */
-        .waveform {
-            display: none;
-            align-items: center;
-            justify-content: center;
-            gap: 4px;
-            height: 30px;
-            margin: 10px 0;
-            animation: fadeIn 0.3s ease;
-        }
-        .waveform.active {
-            display: flex;
-        }
-        .waveform .bar {
-            width: 4px;
-            height: 10px;
-            background-color: var(--india-green);
-            border-radius: 2px;
-            animation: bounceWave 0.8s ease-in-out infinite;
-        }
-        .waveform .bar:nth-child(2) { animation-delay: 0.1s; height: 18px; }
-        .waveform .bar:nth-child(3) { animation-delay: 0.2s; height: 24px; }
-        .waveform .bar:nth-child(4) { animation-delay: 0.3s; height: 14px; }
-        .waveform .bar:nth-child(5) { animation-delay: 0.4s; height: 28px; }
-        .waveform .bar:nth-child(6) { animation-delay: 0.3s; height: 16px; }
-        .waveform .bar:nth-child(7) { animation-delay: 0.2s; height: 22px; }
-        .waveform .bar:nth-child(8) { animation-delay: 0.1s; height: 12px; }
-        .waveform .bar:nth-child(9) { animation-delay: 0s; height: 8px; }
-
-        @keyframes bounceWave {
-            0%, 100% { transform: scaleY(1); }
-            50% { transform: scaleY(1.8); }
-        }
+        .bar-saffron { background-color: #ff671f; }
+        .bar-white { background-color: #ffffff; }
+        .bar-green { background-color: #07823b; }
 
         .container {
-            max-width: 1400px;
-            margin: 20px auto 0 auto;
+            max-width: 1300px;
+            margin: 30px auto 0 auto;
             position: relative;
-            z-index: 2;
+            z-index: 5;
         }
 
+        /* Top Control Bar (Theme Switcher) */
+        .top-navbar {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 15px;
+            animation: fadeIn 0.8s ease;
+        }
+
+        .theme-toggle-btn {
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            color: var(--gold);
+            cursor: pointer;
+            padding: 10px 18px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.9em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: var(--shadow-sm);
+            backdrop-filter: blur(8px);
+        }
+
+        .theme-toggle-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--gold);
+        }
+
+        .theme-toggle-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+
+        /* Header Card with Mandala Backdrop */
         .header {
             text-align: center;
-            margin-bottom: 50px;
-            animation: slideDown 0.6s ease-out;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.8) 100%);
-            border: 1px solid rgba(255, 103, 31, 0.15);
-            border-radius: 24px;
-            padding: 35px 20px;
+            margin-bottom: 35px;
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 28px;
+            padding: 35px 25px;
             position: relative;
             overflow: hidden;
             box-shadow: var(--shadow-md);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(15px);
+            animation: slideDown 0.7s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
+        /* Subtle Indian Mandala background decoration in header */
         .header::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: url('indian_monuments.png');
-            background-size: cover;
-            background-position: center;
-            opacity: 0.09;
+            top: 50%;
+            left: 50%;
+            width: 500px;
+            height: 500px;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle, var(--gold-glow) 0%, transparent 70%);
+            opacity: 0.6;
             z-index: -1;
+            pointer-events: none;
         }
 
         .header-top {
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             gap: 15px;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         .header-logo {
             display: flex;
             align-items: center;
             justify-content: center;
+            position: relative;
         }
 
         .ashoka-chakra {
-            width: 55px;
-            height: 55px;
-            animation: rotateChakra 25s linear infinite;
-            transition: all 0.5s ease;
-            filter: drop-shadow(0 2px 5px rgba(11, 29, 122, 0.2));
+            width: 75px;
+            height: 75px;
+            filter: drop-shadow(0 0 10px var(--chakra-glow));
+            transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+            animation: rotateChakraSlow 45s linear infinite;
         }
-        .ashoka-chakra:hover {
-            animation-duration: 6s;
-            transform: scale(1.1);
+        
+        .ashoka-chakra path, .ashoka-chakra circle, .ashoka-chakra line {
+            stroke: var(--ashoka-chakra-color);
         }
-        @keyframes rotateChakra {
+
+        .ashoka-chakra.spinning-fast {
+            animation: rotateChakraFast 1s linear infinite !important;
+        }
+
+        @keyframes rotateChakraSlow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes rotateChakraFast {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
         }
 
         .header h1 {
-            font-size: 2.8em;
-            font-weight: 800;
-            background: linear-gradient(90deg, var(--india-saffron) 0%, var(--india-blue) 50%, var(--india-green) 100%);
+            font-family: 'Rozha One', 'Cinzel', serif;
+            font-size: 3.5em;
+            font-weight: 400;
+            background: linear-gradient(90deg, #ff671f 10%, var(--text-main) 50%, #07823b 90%);
+            background-size: 200% auto;
+            animation: textGradientShift 5s linear infinite, popIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 8px;
-            letter-spacing: -1px;
+            letter-spacing: 2px;
+            line-height: 1.2;
+            margin-top: 5px;
+        }
+
+        @keyframes textGradientShift {
+            to { background-position: 200% center; }
         }
 
         .header p {
             font-size: 1.15em;
-            color: var(--text-light);
-            font-weight: 600;
+            color: var(--text-sub);
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            max-width: 600px;
+            margin: 5px auto 0 auto;
         }
 
         .header-divider {
-            height: 4px;
-            width: 120px;
-            background: linear-gradient(90deg, var(--india-saffron), var(--india-blue), var(--india-green));
-            margin: 15px auto;
-            border-radius: 2px;
+            height: 3px;
+            width: 140px;
+            background: linear-gradient(90deg, #ff671f, var(--gold), #07823b);
+            margin: 15px auto 5px auto;
+            border-radius: 5px;
         }
 
+        /* Modern Sliding Tabs */
         .tabs {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
-            gap: 12px;
-            margin-bottom: 40px;
-            max-width: 550px;
-            margin-left: auto;
-            margin-right: auto;
+            display: flex;
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            padding: 8px;
+            border-radius: 20px;
+            gap: 8px;
+            max-width: 500px;
+            margin: 0 auto 35px auto;
+            box-shadow: var(--shadow-sm);
+            backdrop-filter: blur(10px);
+            animation: slideDown 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .tab-button {
-            padding: 12px 20px;
-            background: var(--bg-white);
-            border: 2px solid var(--border-color);
-            border-radius: 12px;
+            flex: 1;
+            padding: 12px 16px;
+            background: transparent;
+            border: none;
+            border-radius: 14px;
             cursor: pointer;
             font-weight: 700;
             font-size: 0.95em;
-            color: var(--text-light);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: var(--shadow-sm);
+            color: var(--text-sub);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s ease;
         }
 
         .tab-button:hover {
-            border-color: var(--primary);
-            color: var(--primary);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
+            color: var(--saffron);
+            background: rgba(255, 103, 31, 0.06);
         }
 
         .tab-button.active {
-            background: linear-gradient(135deg, var(--india-saffron) 0%, var(--india-green) 100%);
-            border-color: transparent;
-            color: white;
-            box-shadow: var(--shadow-lg);
-            transform: translateY(-4px);
+            background: linear-gradient(135deg, var(--saffron) 0%, #d4af37 50%, var(--green) 100%);
+            color: #ffffff;
+            box-shadow: var(--shadow-md);
+            transform: translateY(-1px);
         }
 
         .tab-content {
             display: none;
-            animation: fadeIn 0.3s ease-out;
+            animation: fadeIn 0.4s ease-out;
         }
 
         .tab-content.active {
             display: block;
         }
 
-        .translator-container {
+        /* Grid Layout & Float Swap Button */
+        .translator-layout {
+            position: relative;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 24px;
+            gap: 28px;
             margin-bottom: 30px;
-            animation: slideUp 0.6s ease-out;
+            align-items: start;
         }
 
         .panel {
-            background: var(--bg-white);
-            border-radius: 16px;
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 24px;
             box-shadow: var(--shadow-lg);
-            padding: 32px;
-            transition: all 0.3s ease;
-            border: 1px solid var(--border-color);
+            padding: 30px;
+            backdrop-filter: blur(15px);
+            position: relative;
+            overflow: hidden;
+            animation: slideUpFade 0.7s cubic-bezier(0.16, 1, 0.3, 1) backwards;
         }
 
-        .panel:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        .panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--saffron), var(--gold), var(--green));
+            opacity: 0.8;
         }
 
         .panel-header {
             display: flex;
             align-items: center;
             gap: 12px;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--panel-border);
+            padding-bottom: 12px;
         }
 
         .panel-icon {
-            font-size: 2em;
-            opacity: 0.8;
+            font-size: 1.5em;
+            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.1));
         }
 
         .panel h2 {
-            font-size: 1.5em;
-            color: var(--primary);
+            font-size: 1.3em;
+            color: var(--saffron);
+            font-family: 'Outfit', sans-serif;
             font-weight: 700;
-            letter-spacing: -0.5px;
         }
 
+        /* Language Dropdown Selectors */
         .language-selector {
-            margin-bottom: 20px;
+            margin-bottom: 18px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
-        }
-
-        label {
-            font-weight: 600;
-            color: var(--text-dark);
-            font-size: 0.95em;
-            display: flex;
-            align-items: center;
             gap: 8px;
         }
 
-        select, textarea {
-            padding: 14px 16px;
-            border: 2px solid var(--border-color);
-            border-radius: 10px;
-            font-size: 1em;
-            font-family: inherit;
-            transition: all 0.3s ease;
-            background: var(--bg-white);
-            color: var(--text-dark);
+        .language-selector label {
+            font-weight: 600;
+            color: var(--text-main);
+            font-size: 0.9em;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .select-wrapper {
+            position: relative;
+            width: 100%;
         }
 
         select {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid var(--panel-border);
+            border-radius: 14px;
+            font-size: 1em;
+            font-family: inherit;
+            font-weight: 600;
+            background-color: var(--select-bg);
+            color: var(--text-main);
             cursor: pointer;
             appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%231e40af' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 12px center;
-            padding-right: 40px;
+            outline: none;
+            box-shadow: var(--shadow-sm);
         }
 
-        select:focus, textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+        select:focus {
+            border-color: var(--saffron);
+            box-shadow: 0 0 0 3px var(--gold-glow);
+        }
+
+        .select-wrapper::after {
+            content: "▼";
+            font-size: 0.8em;
+            color: var(--saffron);
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+        }
+
+        /* Textarea inputs */
+        .textarea-container {
+            position: relative;
+            width: 100%;
         }
 
         textarea {
-            resize: vertical;
-            min-height: 280px;
-            padding: 16px;
-            font-size: 1em;
-            line-height: 1.8;
-            transition: all 0.3s ease;
+            width: 100%;
+            resize: none;
+            min-height: 250px;
+            padding: 20px;
+            font-size: 1.1em;
+            line-height: 1.7;
+            font-family: 'Outfit', 'Noto Sans Devanagari', sans-serif;
+            background-color: var(--textarea-bg);
+            color: var(--text-main);
+            border: 2px solid var(--panel-border);
+            border-radius: 16px;
+            outline: none;
+            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.02);
         }
 
         textarea:focus {
-            min-height: 320px;
+            border-color: var(--saffron);
+            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.02), 0 0 0 4px var(--gold-glow);
         }
 
-        .controls {
+        /* Character Counter & Progress Bar */
+        .char-count-section {
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+
+        .char-count-text {
+            font-size: 0.85em;
+            color: var(--text-sub);
+            font-weight: 500;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .char-count-bar {
+            height: 6px;
+            background: rgba(0,0,0,0.05);
+            border-radius: 10px;
+            margin-top: 6px;
+            overflow: hidden;
+        }
+
+        .dark-theme .char-count-bar {
+            background: rgba(255,255,255,0.08);
+        }
+
+        .char-count-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--green) 0%, var(--gold) 50%, var(--saffron) 100%);
+            width: 0%;
+            border-radius: 10px;
+        }
+
+        /* Floating Swap Button in the center */
+        .swap-container {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+        }
+
+        .swap-button-fab {
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--saffron) 0%, var(--gold) 50%, var(--green) 100%);
+            border: 2px solid var(--panel-bg);
+            color: #ffffff;
+            font-size: 1.3em;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 20px rgba(255, 103, 31, 0.35);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .swap-button-fab:hover {
+            transform: scale(1.1) rotate(180deg);
+            box-shadow: 0 8px 25px rgba(255, 103, 31, 0.5);
+        }
+
+        .swap-button-fab:active {
+            transform: scale(0.95) rotate(180deg);
+        }
+
+        /* Panel Control Buttons */
+        .controls-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
-            margin-top: 20px;
         }
 
-        button {
-            padding: 12px 20px;
-            border: none;
-            border-radius: 10px;
+        button.action-btn {
+            padding: 14px 20px;
+            border-radius: 14px;
             font-size: 0.95em;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
             box-shadow: var(--shadow-sm);
+            letter-spacing: 0.3px;
         }
 
-        button:hover {
-            transform: translateY(-2px);
+        button.action-btn:hover {
+            transform: translateY(-3px);
             box-shadow: var(--shadow-md);
+            animation: pulseSoft 1.5s infinite;
         }
 
-        button:active {
+        button.action-btn:active {
             transform: translateY(0);
         }
 
-        .primary-btn {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-            color: white;
-            grid-column: 1 / -1;
+        .btn-clear {
+            background: rgba(239, 68, 68, 0.08);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+        .btn-clear:hover {
+            background: #ef4444;
+            color: #ffffff;
         }
 
-        .primary-btn:hover {
-            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+        .btn-copy {
+            background: rgba(7, 130, 59, 0.08);
+            color: var(--green);
+            border: 1px solid rgba(7, 130, 59, 0.2);
+        }
+        .btn-copy:hover {
+            background: var(--green);
+            color: #ffffff;
         }
 
-        .secondary-btn {
-            background: var(--bg-light);
-            color: var(--text-dark);
-            border: 2px solid var(--border-color);
+        .btn-speak {
+            background: rgba(11, 29, 122, 0.08);
+            color: var(--navy);
+            border: 1px solid rgba(11, 29, 122, 0.2);
+        }
+        .dark-theme .btn-speak {
+            background: rgba(59, 130, 246, 0.12);
+            color: var(--navy);
+            border: 1px solid rgba(59, 130, 246, 0.25);
+        }
+        .btn-speak:hover {
+            background: var(--navy);
+            color: #ffffff;
+        }
+        
+        .btn-speak.playing {
+            animation: pulseGlow 1.5s infinite;
+            background: linear-gradient(90deg, var(--saffron), var(--green)) !important;
+            color: white !important;
+            border-color: transparent !important;
         }
 
-        .secondary-btn:hover {
-            background: var(--border-color);
-            border-color: var(--primary);
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 10px rgba(255, 103, 31, 0.3); }
+            50% { box-shadow: 0 0 22px rgba(7, 130, 59, 0.6); }
         }
 
-        .success-btn {
-            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
-            color: white;
+        /* Equalizer Waveform animation on active voice playing */
+        .tts-waveform {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            height: 32px;
+            margin-top: 15px;
+            background: rgba(11, 29, 122, 0.04);
+            border-radius: 12px;
+            padding: 5px;
+            animation: fadeIn 0.3s ease;
+        }
+        .dark-theme .tts-waveform {
+            background: rgba(255, 255, 255, 0.03);
         }
 
-        .success-btn:hover {
-            background: linear-gradient(135deg, #047857 0%, var(--success) 100%);
+        .tts-waveform.active {
+            display: flex;
         }
 
-        .swap-button {
-            background: linear-gradient(135deg, var(--accent) 0%, #d97706 100%);
-            color: white;
-            grid-column: 1 / -1;
+        .waveform-bar {
+            width: 4px;
+            height: 8px;
+            background-color: var(--saffron);
+            border-radius: 2px;
+            animation: bounceWaveform 0.8s ease-in-out infinite alternate;
+        }
+        .waveform-bar:nth-child(2n) { background-color: var(--gold); animation-delay: 0.15s; }
+        .waveform-bar:nth-child(3n) { background-color: var(--green); animation-delay: 0.3s; }
+        .waveform-bar:nth-child(4n) { animation-delay: 0.45s; }
+
+        @keyframes bounceWaveform {
+            0% { transform: scaleY(1); }
+            100% { transform: scaleY(3.2); }
+        }
+
+        /* Documents panel styling */
+        .doc-layout-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .file-upload-zone {
+            border: 3px dashed var(--panel-border);
+            border-radius: 20px;
+            padding: 50px 30px;
+            text-align: center;
+            cursor: pointer;
+            background: linear-gradient(135deg, rgba(255, 103, 31, 0.03) 0%, rgba(7, 130, 59, 0.03) 100%);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .file-upload-zone:hover {
+            border-color: var(--saffron);
+            background: linear-gradient(135deg, rgba(255, 103, 31, 0.06) 0%, rgba(7, 130, 59, 0.06) 100%);
+            transform: scale(1.01);
+        }
+
+        .file-upload-zone input {
+            display: none;
+        }
+
+        .file-icon-wrapper {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: var(--gold-glow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2em;
+            color: var(--gold);
+            margin-bottom: 5px;
+        }
+
+        .file-upload-text {
             font-size: 1.1em;
+            font-weight: 700;
+            color: var(--text-main);
         }
 
-        .swap-button:hover {
-            background: linear-gradient(135deg, #d97706 0%, var(--accent) 100%);
+        .file-upload-subtext {
+            font-size: 0.88em;
+            color: var(--text-sub);
         }
 
-        .char-count {
-            font-size: 0.85em;
-            color: var(--text-light);
-            margin-top: 8px;
+        /* History list styles */
+        .history-list {
+            list-style: none;
+            max-height: 480px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            padding-right: 5px;
+        }
+
+        .history-card {
+            background: var(--textarea-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 16px;
+            padding: 18px 22px;
+            cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 15px;
+            box-shadow: var(--shadow-sm);
+            position: relative;
         }
 
-        .char-count-bar {
-            height: 4px;
-            background: var(--border-color);
-            border-radius: 2px;
-            margin-top: 8px;
-            overflow: hidden;
+        .history-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 15%;
+            height: 70%;
+            width: 4px;
+            background: var(--saffron);
+            border-radius: 0 4px 4px 0;
         }
 
-        .char-count-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--success) 0%, var(--accent) 100%);
-            transition: width 0.3s ease;
+        .history-card:hover {
+            transform: translateX(6px);
+            border-color: var(--gold);
+            box-shadow: var(--shadow-md);
+            background: var(--panel-bg);
         }
 
-        .loading {
-            text-align: center;
-            padding: 20px;
-            color: var(--primary);
+        .history-details {
+            flex: 1;
+        }
+
+        .history-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .lang-badge {
+            background: var(--gold-glow);
+            color: var(--saffron);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 700;
+        }
+
+        .history-time {
+            font-size: 0.8em;
+            color: var(--text-sub);
+            font-weight: 500;
+        }
+
+        .history-snippets {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .snippet-src {
+            font-size: 0.95em;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .snippet-translated {
+            font-size: 0.95em;
+            color: var(--green);
+            font-weight: 500;
+        }
+
+        .btn-delete-item {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(239, 68, 68, 0.08);
+            color: #ef4444;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+        }
+
+        .btn-delete-item:hover {
+            background: #ef4444;
+            color: #ffffff;
+            transform: scale(1.1);
+        }
+
+        .clear-all-history-btn {
+            width: 100%;
+            padding: 14px;
+            border-radius: 14px;
+            border: 1px dashed rgba(239, 68, 68, 0.4);
+            background: rgba(239, 68, 68, 0.05);
+            color: #ef4444;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .clear-all-history-btn:hover {
+            background: #ef4444;
+            color: white;
+            border-style: solid;
+        }
+
+        /* Error Message Overlay */
+        .error-message {
+            color: #dc2626;
+            background: rgba(239, 68, 68, 0.07);
+            padding: 14px 18px;
+            border-radius: 12px;
+            margin-top: 15px;
             display: none;
+            border-left: 4px solid #ef4444;
+            font-size: 0.95em;
             font-weight: 600;
         }
 
-        .loading.active {
+        .error-message.active {
             display: block;
+            animation: shake 0.4s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            75% { transform: translateX(6px); }
+        }
+
+        /* Full Overlay Loader */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            font-weight: 700;
+            color: var(--saffron);
+            animation: pulseGlow 1.5s infinite;
+        }
+
+        .loading.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
 
         .spinner {
             display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid var(--border-color);
-            border-top: 3px solid var(--primary);
+            width: 24px;
+            height: 24px;
+            border: 3px solid var(--panel-border);
+            border-top: 3px solid var(--saffron);
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
-            margin-right: 10px;
         }
 
         @keyframes spin {
@@ -472,215 +871,148 @@
             100% { transform: rotate(360deg); }
         }
 
-        .file-upload {
-            border: 3px dashed var(--primary);
-            border-radius: 12px;
-            padding: 40px 30px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: linear-gradient(135deg, rgba(30, 64, 175, 0.05) 0%, rgba(245, 158, 11, 0.05) 100%);
-        }
-
-        .file-upload:hover {
-            background: linear-gradient(135deg, rgba(30, 64, 175, 0.1) 0%, rgba(245, 158, 11, 0.1) 100%);
-            border-color: var(--primary-light);
-        }
-
-        .file-upload input {
-            display: none;
-        }
-
-        .file-upload-icon {
-            font-size: 3em;
-            margin-bottom: 15px;
-            display: block;
-        }
-
-        .file-upload-text {
-            color: var(--text-dark);
-            font-weight: 600;
-        }
-
-        .file-upload-subtext {
-            color: var(--text-light);
-            font-size: 0.9em;
-            margin-top: 8px;
-        }
-
-        .history-list {
-            list-style: none;
-            max-height: 500px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .history-item {
-            padding: 16px;
-            background: var(--bg-light);
-            border-radius: 10px;
-            border-left: 4px solid var(--primary);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .history-item:hover {
-            background: linear-gradient(135deg, rgba(30, 64, 175, 0.05) 0%, rgba(245, 158, 11, 0.05) 100%);
-            transform: translateX(8px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .history-content {
-            flex: 1;
-        }
-
-        .history-langs {
-            font-weight: 600;
-            color: var(--primary);
-            font-size: 0.9em;
-            margin-bottom: 6px;
-        }
-
-        .history-text {
-            color: var(--text-dark);
-            font-size: 0.95em;
-            margin-bottom: 4px;
-        }
-
-        .history-meta {
-            font-size: 0.8em;
-            color: var(--text-light);
-        }
-
-        .history-delete {
-            background: var(--danger);
-            color: white;
-            border: none;
-            width: 30px;
-            height: 30px;
-            border-radius: 6px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-left: 12px;
-        }
-
-        .history-delete:hover {
-            background: #dc2626;
-        }
-
+        /* Premium Customized Toast messages */
         .toast {
             position: fixed;
             bottom: 30px;
             right: 30px;
-            background: white;
-            color: var(--text-dark);
-            padding: 16px 24px;
-            border-radius: 10px;
+            background: var(--panel-bg);
+            color: var(--text-main);
+            padding: 16px 26px;
+            border-radius: 16px;
             box-shadow: var(--shadow-lg);
-            z-index: 1000;
-            animation: slideInRight 0.4s ease-out;
-            border-left: 4px solid var(--success);
-            font-weight: 600;
-            max-width: 400px;
+            z-index: 10000;
+            border-left: 4px solid var(--green);
+            font-weight: 700;
+            max-width: 380px;
+            backdrop-filter: blur(15px);
+            border-top: 1px solid var(--panel-border);
+            border-right: 1px solid var(--panel-border);
+            animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .toast.error {
-            border-left-color: var(--danger);
+            border-left-color: #ef4444;
         }
 
-        @keyframes slideInRight {
-            from {
-                transform: translateX(400px);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
+        /* Bottom Silhouette Vector Monuments Footer */
+        .monuments-footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 160px;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+            opacity: var(--monument-opacity);
+            border-top: 1px solid rgba(212, 175, 55, 0.1);
         }
 
-        .error-message {
-            color: var(--danger);
-            background: rgba(239, 68, 68, 0.1);
-            padding: 12px 16px;
-            border-radius: 8px;
-            margin-top: 12px;
-            display: none;
-            border-left: 4px solid var(--danger);
-            font-size: 0.95em;
+        .monuments-svg {
+            width: 100%;
+            height: 100%;
+            vertical-align: bottom;
         }
 
-        .error-message.active {
-            display: block;
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(-40px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        @keyframes slideUpFade {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes bounceIn {
-            0% { opacity: 0; transform: scale(0.3) translateY(20px); }
-            50% { opacity: 1; }
-            100% { transform: scale(1) translateY(0); }
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.9); }
+            60% { opacity: 1; transform: scale(1.02); }
+            100% { opacity: 1; transform: scale(1); }
         }
 
-        @keyframes slideInLeft {
-            from { opacity: 0; transform: translateX(-30px); }
-            to { opacity: 1; transform: translateX(0); }
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
-        @keyframes glow {
-            0%, 100% { box-shadow: 0 0 10px rgba(30, 64, 175, 0.5); }
-            50% { box-shadow: 0 0 20px rgba(30, 64, 175, 0.8), 0 0 30px rgba(245, 158, 11, 0.6); }
+        @keyframes pulseSoft {
+            0% { box-shadow: 0 4px 10px rgba(212, 175, 55, 0.4); }
+            50% { box-shadow: 0 4px 20px rgba(212, 175, 55, 0.8), inset 0 0 10px rgba(212, 175, 55, 0.2); }
+            100% { box-shadow: 0 4px 10px rgba(212, 175, 55, 0.4); }
         }
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
         }
 
-        @keyframes heartbeat {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
+        ::-webkit-scrollbar-track {
+            background: transparent;
         }
 
-        @media (max-width: 768px) {
-            .translator-container {
+        ::-webkit-scrollbar-thumb {
+            background: var(--panel-border);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--saffron);
+        }
+
+        /* Responsive Layout Updates */
+        @media (max-width: 992px) {
+            .translator-layout {
                 grid-template-columns: 1fr;
+                gap: 50px; /* Space for the floating swap button */
+            }
+
+            .swap-container {
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%) rotate(90deg);
+            }
+            
+            .swap-button-fab:hover {
+                transform: scale(1.1) rotate(270deg);
+            }
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 16px;
+                padding-bottom: 180px;
             }
 
             .header h1 {
-                font-size: 2em;
+                font-size: 2.5em;
+            }
+
+            .tabs {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .tab-button {
+                padding: 10px;
+            }
+
+            .doc-layout-grid {
+                grid-template-columns: 1fr;
             }
 
             .panel {
@@ -688,44 +1020,348 @@
             }
 
             textarea {
-                min-height: 200px;
-            }
-
-            .tabs {
-                grid-template-columns: 1fr;
-            }
-
-            .controls {
-                grid-template-columns: 1fr;
-            }
-
-            .toast {
-                left: 10px;
-                right: 10px;
-                bottom: 20px;
-                max-width: none;
+                min-height: 180px;
             }
         }
 
-        ::-webkit-scrollbar {
-            width: 8px;
+        /* Resource Center Styles */
+        .resources-panel {
+            padding: 20px;
+            min-height: 550px;
+        }
+        .resources-layout {
+            display: flex;
+            gap: 20px;
+            height: 550px;
+        }
+        .resource-sidebar {
+            width: 320px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            border-right: 1px solid var(--panel-border);
+            padding-right: 15px;
+        }
+        .resource-sidebar input {
+            padding: 14px 18px;
+            border-radius: 14px;
+            border: 2px solid var(--panel-border);
+            background: var(--textarea-bg);
+            color: var(--text-main);
+            font-family: inherit;
+            outline: none;
+            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.02);
+            font-size: 1em;
+        }
+        .resource-sidebar input:focus {
+            border-color: var(--saffron);
+            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.02), 0 0 0 4px var(--gold-glow);
+        }
+        .resource-list {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding-right: 5px;
+        }
+        .resource-item {
+            padding: 14px 18px;
+            border-radius: 14px;
+            cursor: pointer;
+            background: var(--textarea-bg);
+            border: 1px solid transparent;
+            font-weight: 600;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .resource-item:hover {
+            background: var(--panel-bg);
+            border-color: var(--gold);
+            transform: translateX(6px);
+            box-shadow: var(--shadow-sm);
+        }
+        .resource-item.active {
+            background: linear-gradient(135deg, var(--saffron) 0%, var(--gold) 100%);
+            color: white;
+            border-color: transparent;
+            box-shadow: var(--shadow-md);
+            transform: translateX(6px);
+        }
+        .resource-item .badge {
+            font-size: 0.75em;
+            padding: 4px 10px;
+            border-radius: 12px;
+            background: rgba(0,0,0,0.15);
+        }
+        .resource-content {
+            flex: 1;
+            padding: 0;
+            background: transparent;
+            overflow-y: auto;
+            border-radius: 16px;
+        }
+        .resource-empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+            color: var(--text-sub);
+            background: var(--textarea-bg);
+            border-radius: 16px;
+            border: 1px dashed var(--panel-border);
+        }
+        
+        /* Enhanced UI for Details */
+        .resource-header-banner {
+            background: linear-gradient(135deg, var(--saffron-light) 0%, var(--saffron) 50%, var(--gold) 100%);
+            padding: 40px 35px;
+            border-radius: 20px;
+            color: #ffffff;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow-md);
+        }
+        .dark-theme .resource-header-banner {
+            background: linear-gradient(135deg, #1e3a8a 0%, #312e81 50%, #111827 100%);
+        }
+        .resource-header-banner::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.15);
+            pointer-events: none;
+        }
+        .resource-header-content {
+            position: relative;
+            z-index: 2;
+        }
+        .resource-header-content h2 {
+            font-size: 3.2em;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.15);
+            font-family: 'Rozha One', 'Cinzel', serif;
+            letter-spacing: 1px;
+        }
+        .resource-native-script {
+            font-size: 1.3em;
+            opacity: 0.95;
+            margin-bottom: 18px;
+            font-weight: 500;
+        }
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 25px;
+        }
+        .resource-card {
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 18px;
+            padding: 28px;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        .resource-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--gold);
+        }
+        .resource-card h3 {
+            color: var(--saffron);
+            font-size: 1.25em;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Outfit', sans-serif;
+        }
+        .resource-card p, .resource-card ul {
+            color: var(--text-main);
+            line-height: 1.7;
+            font-size: 1em;
+        }
+        .resource-card ul {
+            padding-left: 20px;
+        }
+        .resource-card li {
+            margin-bottom: 10px;
+        }
+        .fact-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px dashed var(--panel-border);
+        }
+        .fact-item:last-child {
+            border-bottom: none;
+        }
+        .fact-label {
+            color: var(--text-sub);
+            font-weight: 600;
+        }
+        .fact-value {
+            font-weight: 700;
+            text-align: right;
+            color: var(--text-main);
         }
 
-        ::-webkit-scrollbar-track {
-            background: var(--bg-light);
+        @media (max-width: 992px) {
+            .resources-layout {
+                flex-direction: column;
+                height: auto;
+            }
+            .resource-sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid var(--panel-border);
+                padding-right: 0;
+                padding-bottom: 20px;
+                height: 350px;
+            }
+        }
+        /* Background Motif */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5 A 25 25 0 0 1 55 30 A 25 25 0 0 1 30 55 A 25 25 0 0 1 5 30 A 25 25 0 0 1 30 5 Z' fill='none' stroke='%23d4af37' stroke-width='0.5' stroke-dasharray='2,3' opacity='0.5'/%3E%3Cpath d='M30 15 L 45 30 L 30 45 L 15 30 Z' fill='none' stroke='%23ff671f' stroke-width='0.5' opacity='0.3'/%3E%3C/svg%3E");
+            background-size: 80px 80px;
+            opacity: 0.04;
+            z-index: -1;
+            pointer-events: none;
+        }
+        .dark-theme body::before { opacity: 0.02; }
+
+        /* Floating Help Button & Modal */
+        .help-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            color: var(--text-main);
+            font-size: 1.5em;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: var(--shadow-md);
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        .help-btn:hover {
+            transform: scale(1.1) translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--saffron);
+            color: var(--saffron);
         }
 
-        ::-webkit-scrollbar-thumb {
-            background: var(--border-color);
-            border-radius: 4px;
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+        .modal-overlay.active { display: flex; }
+
+        .modal-content {
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 24px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: var(--shadow-lg);
+            animation: popIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+        }
+        .modal-close {
+            position: absolute;
+            top: 20px; right: 20px;
+            background: none; border: none;
+            font-size: 1.5em; color: var(--text-sub);
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        .modal-close:hover { color: #ef4444; }
+        .modal-content h3 { color: var(--saffron); margin-bottom: 20px; font-size: 1.8em; font-family: 'Rozha One', serif;}
+        .shortcut-item {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 12px 0; border-bottom: 1px dashed var(--panel-border);
+        }
+        .shortcut-item:last-child { border-bottom: none; }
+        .shortcut-key {
+            background: var(--textarea-bg); padding: 5px 10px; border-radius: 8px;
+            border: 1px solid var(--panel-border); font-family: monospace; font-weight: bold;
+            color: var(--saffron); box-shadow: 0 2px 0 var(--panel-border);
         }
 
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--text-light);
+        /* Footer */
+        .site-footer {
+            margin-top: 80px;
+            padding: 50px 20px 30px;
+            text-align: center;
+            border-top: 1px solid var(--panel-border);
+            background: var(--panel-bg);
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 10;
         }
+        .footer-content { max-width: 800px; margin: 0 auto; }
+        .footer-fact-box {
+            background: var(--textarea-bg); border: 1px dashed var(--panel-border);
+            padding: 20px; border-radius: 16px; margin-bottom: 30px;
+            display: inline-block; text-align: left;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.02);
+            width: 100%;
+        }
+        .footer-fact-box h4 { color: var(--green); margin-bottom: 8px; display: flex; align-items: center; gap: 8px;}
+        .footer-fact-box p { font-size: 0.95em; color: var(--text-main); font-weight: 500;}
+        .footer-bottom { color: var(--text-sub); font-size: 0.9em; margin-top: 20px;}
+        .footer-bottom a { color: var(--saffron); text-decoration: none; font-weight: 600;}
 
+        /* Word of the Day */
+        .wotd-card {
+            background: linear-gradient(135deg, rgba(255, 103, 31, 0.05) 0%, rgba(212, 175, 55, 0.05) 100%);
+            border: 1px solid var(--panel-border);
+            border-radius: 16px; padding: 25px; margin-top: 25px;
+            box-shadow: var(--shadow-sm); transition: transform 0.3s ease;
+            position: relative; overflow: hidden;
+        }
+        .wotd-card:hover { transform: translateY(-3px); border-color: var(--gold); }
+        .wotd-header { display: flex; align-items: center; gap: 10px; color: var(--saffron); font-weight: 700; margin-bottom: 12px; }
+        .wotd-word { font-size: 2.2em; font-family: 'Rozha One', serif; color: var(--text-main); margin-bottom: 5px; }
+        .wotd-meaning { color: var(--text-sub); font-size: 1.1em; font-style: italic; margin-bottom: 8px; }
+        .wotd-origin { font-size: 0.85em; background: rgba(0,0,0,0.05); padding: 4px 10px; border-radius: 12px; display: inline-block; color: var(--navy); font-weight: 600; }
+        .dark-theme .wotd-origin { background: rgba(255,255,255,0.1); color: var(--gold); }
 
-
+        /* Toast Progress */
+        .toast-progress {
+            height: 3px; background: rgba(255,255,255,0.4); width: 100%;
+            position: absolute; bottom: 0; left: 0; border-radius: 0 0 12px 12px;
+            transform-origin: left;
+            animation: shrinkProgress 3s linear forwards;
+        }
+        @keyframes shrinkProgress { from { transform: scaleX(1); } to { transform: scaleX(0); } }
     </style>
 </head>
 <body>
@@ -734,14 +1370,28 @@
         <div class="bar-white"></div>
         <div class="bar-green"></div>
     </div>
+
     <div class="container">
+        <!-- Top Navbar with Theme Selector -->
+        <div class="top-navbar">
+            <button class="theme-toggle-btn" onclick="toggleTheme()" id="theme-btn">
+                <svg viewBox="0 0 24 24" id="theme-icon">
+                    <!-- Sun icon default -->
+                    <path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58c-.39-.39-1.03-.39-1.41 0s-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37c-.39-.39-1.03-.39-1.41 0s-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41l-1.06-1.06zm1.06-10.96c.39-.39.39-1.03 0-1.41s-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.01c.39-.39.39-1.03 0-1.41s-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/>
+                </svg>
+                <span id="theme-text">Ratri Mode</span>
+            </button>
+        </div>
+
+        <!-- Styled Header Card -->
         <div class="header">
             <div class="header-top">
                 <div class="header-logo">
-                    <svg class="ashoka-chakra" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="50" cy="50" r="45" stroke="#0b1d7a" stroke-width="4" fill="none" />
-                        <circle cx="50" cy="50" r="8" fill="#0b1d7a" />
-                        <g stroke="#0b1d7a" stroke-width="2">
+                    <!-- Spinning Ashoka Chakra Vector SVG -->
+                    <svg class="ashoka-chakra" id="main-chakra" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="45" stroke-width="3.5" fill="none" />
+                        <circle cx="50" cy="50" r="8" fill="currentColor" />
+                        <g stroke-width="1.8">
                             <line x1="50" y1="50" x2="50" y2="5" />
                             <line x1="50" y1="50" x2="50" y2="95" />
                             <line x1="50" y1="50" x2="5" y2="50" />
@@ -767,23 +1417,27 @@
                             <line x1="50" y1="50" x2="50" y2="5" transform="rotate(330 50 50)" />
                             <line x1="50" y1="50" x2="50" y2="5" transform="rotate(345 50 50)" />
                         </g>
-                        <circle cx="50" cy="50" r="41" stroke="#0b1d7a" stroke-width="1" fill="none" stroke-dasharray="1 1.5" />
+                        <circle cx="50" cy="50" r="41" stroke-width="0.8" fill="none" stroke-dasharray="1 1.5" />
                     </svg>
                 </div>
                 <h1>भाषा</h1>
             </div>
-            <p>Indian Language Translator - All Indian Languages & Dialects</p>
+            <p>Bhasha - Real-Time Indian Language & Dialect Translator</p>
             <div class="header-divider"></div>
         </div>
 
-        <div class="tabs">
+        <!-- Sliding segmented control tabs -->
+        <div class="tabs" style="max-width: 650px;">
             <button class="tab-button active" onclick="switchTab(event, 'text-tab')">📝 Text</button>
             <button class="tab-button" onclick="switchTab(event, 'file-tab')">📄 Documents</button>
             <button class="tab-button" onclick="switchTab(event, 'history-tab')">📋 History</button>
+            <button class="tab-button" onclick="switchTab(event, 'resources-tab')">📚 Resources</button>
         </div>
 
+        <!-- 📝 TEXT TRANSLATION TAB -->
         <div id="text-tab" class="tab-content active">
-            <div class="translator-container">
+            <div class="translator-layout">
+                <!-- Source Panel -->
                 <div class="panel">
                     <div class="panel-header">
                         <span class="panel-icon">📥</span>
@@ -791,61 +1445,77 @@
                     </div>
                     <div class="language-selector">
                         <label for="source-lang">🌐 From Language:</label>
-                        <select id="source-lang" onchange="translateRealTime()">
-                            <optgroup label="International">
-                                <option value="English">English</option>
-                            </optgroup>
-                            <optgroup label="Major Languages">
-                                <option value="Hindi">Hindi (हिंदी)</option>
-                                <option value="Tamil">Tamil (தமிழ்)</option>
-                                <option value="Telugu">Telugu (తెలుగు)</option>
-                                <option value="Kannada">Kannada (ಕನ್ನಡ)</option>
-                                <option value="Malayalam">Malayalam (മലയാളം)</option>
-                                <option value="Marathi">Marathi (मराठी)</option>
-                                <option value="Gujarati">Gujarati (ગુજરાતી)</option>
-                                <option value="Bengali">Bengali (বাংলা)</option>
-                                <option value="Punjabi">Punjabi (ਪੰਜਾਬੀ)</option>
-                                <option value="Urdu">Urdu (اردو)</option>
-                                <option value="Odia">Odia (ଓଡ଼ିଆ)</option>
-                                <option value="Assamese">Assamese (অসমীয়া)</option>
-                            </optgroup>
-                            <optgroup label="Other Languages">
-                                <option value="Sanskrit">Sanskrit (संस्कृत)</option>
-                                <option value="Nepali">Nepali (नेपाली)</option>
-                                <option value="Konkani">Konkani (कोंकणी)</option>
-                                <option value="Manipuri">Manipuri (ମଣିପୁରୀ)</option>
-                                <option value="Sindhi">Sindhi (سنڌي)</option>
-                                <option value="Bodo">Bodo (बड़ो)</option>
-                                <option value="Dogri">Dogri (डोगरी)</option>
-                                <option value="Maithili">Maithili (मैथिली)</option>
-                                <option value="Santali">Santali (ᱥᱟᱱᱛᱟᱞᱤ)</option>
-                            </optgroup>
-                            <optgroup label="Dialects">
-                                <option value="Bhojpuri">Bhojpuri (भोजपुरी)</option>
-                                <option value="Bundelkhandi">Bundelkhandi (बुंदेलखंडी)</option>
-                                <option value="Awadhi">Awadhi (अवधी)</option>
-                                <option value="Magahi">Magahi (मगही)</option>
-                                <option value="Angika">Angika (अंगिका)</option>
-                                <option value="Chhattisgarhi">Chhattisgarhi (छत्तीसगढ़ी)</option>
-                                <option value="Bagheli">Bagheli (बघेली)</option>
-                                <option value="Gondi">Gondi (गोंडी)</option>
-                                <option value="Tulu">Tulu (ತುಳು)</option>
-                            </optgroup>
-                        </select>
+                        <div class="select-wrapper">
+                            <select id="source-lang" onchange="translateRealTime()">
+                                <optgroup label="International">
+                                    <option value="English">English</option>
+                                </optgroup>
+                                <optgroup label="Major Languages">
+                                    <option value="Hindi">Hindi (हिंदी)</option>
+                                    <option value="Tamil">Tamil (தமிழ்)</option>
+                                    <option value="Telugu">Telugu (తెలుగు)</option>
+                                    <option value="Kannada">Kannada (ಕನ್ನಡ)</option>
+                                    <option value="Malayalam">Malayalam (മലയാളം)</option>
+                                    <option value="Marathi">Marathi (मराठी)</option>
+                                    <option value="Gujarati">Gujarati (ગુજરાતી)</option>
+                                    <option value="Bengali">Bengali (বাংলা)</option>
+                                    <option value="Punjabi">Punjabi (ਪੰਜਾਬੀ)</option>
+                                    <option value="Urdu">Urdu (اردو)</option>
+                                    <option value="Odia">Odia (ଓଡ଼ିଆ)</option>
+                                    <option value="Assamese">Assamese (অসমীয়া)</option>
+                                </optgroup>
+                                <optgroup label="Other Languages">
+                                    <option value="Sanskrit">Sanskrit (संस्कृत)</option>
+                                    <option value="Nepali">Nepali (नेपाली)</option>
+                                    <option value="Konkani">Konkani (कोंकणी)</option>
+                                    <option value="Manipuri">Manipuri (ಮଣିପୁರୀ)</option>
+                                    <option value="Sindhi">Sindhi (سنڌي)</option>
+                                    <option value="Bodo">Bodo (बड़ो)</option>
+                                    <option value="Dogri">Dogri (डोगरी)</option>
+                                    <option value="Maithili">Maithili (मैथिली)</option>
+                                    <option value="Santali">Santali (ᱥᱟᱱᱛᱟᱞᱤ)</option>
+                                </optgroup>
+                                <optgroup label="Dialects">
+                                    <option value="Bhojpuri">Bhojpuri (भोजपुरी)</option>
+                                    <option value="Bundelkhandi">Bundelkhandi (बुंदेलखंडी)</option>
+                                    <option value="Awadhi">Awadhi (अवधी)</option>
+                                    <option value="Magahi">Magahi (मगही)</option>
+                                    <option value="Angika">Angika (अंगिका)</option>
+                                    <option value="Chhattisgarhi">Chhattisgarhi (छत्तीसगढ़ी)</option>
+                                    <option value="Bagheli">Bagheli (बघेली)</option>
+                                    <option value="Gondi">Gondi (गोंडी)</option>
+                                    <option value="Tulu">Tulu (ತುಳು)</option>
+                                </optgroup>
+                            </select>
+                        </div>
                     </div>
-                    <textarea id="source-text" placeholder="Type or paste text here... (Max 5000 characters)" oninput="updateCharCount(); translateRealTime();"></textarea>
-                    <div class="char-count">
-                        <span>Characters: <strong id="source-count">0</strong>/5000</span>
+                    
+                    <div class="textarea-container">
+                        <textarea id="source-text" placeholder="Type or paste text here to translate... (Max 5000 characters)" oninput="updateCharCount(); translateRealTime();"></textarea>
                     </div>
-                    <div class="char-count-bar">
-                        <div class="char-count-fill" id="source-fill"></div>
+
+                    <div class="char-count-section">
+                        <div class="char-count-text">
+                            <span>Character Limit</span>
+                            <span><strong id="source-count">0</strong> / 5000</span>
+                        </div>
+                        <div class="char-count-bar">
+                            <div class="char-count-fill" id="source-fill"></div>
+                        </div>
                     </div>
-                    <div class="controls">
-                        <button class="secondary-btn" onclick="clearSource()">🗑️ Clear</button>
-                        <button class="success-btn" onclick="copySource()">📋 Copy</button>
+
+                    <div class="controls-grid">
+                        <button class="action-btn btn-clear" onclick="clearSource()">🗑️ Clear</button>
+                        <button class="action-btn btn-copy" onclick="copySource()">📋 Copy</button>
                     </div>
                 </div>
 
+                <!-- Floating/Middle Language Swap Button -->
+                <div class="swap-container">
+                    <button class="swap-button-fab" onclick="swapLanguages()" title="Swap Languages">🔄</button>
+                </div>
+
+                <!-- Target Panel -->
                 <div class="panel">
                     <div class="panel-header">
                         <span class="panel-icon">📤</span>
@@ -853,140 +1523,157 @@
                     </div>
                     <div class="language-selector">
                         <label for="target-lang">🌐 To Language:</label>
-                        <select id="target-lang" onchange="translateRealTime()">
-                            <optgroup label="International">
-                                <option value="English">English</option>
-                            </optgroup>
-                            <optgroup label="Major Languages">
-                                <option value="Hindi" selected>Hindi (हिंदी)</option>
-                                <option value="Tamil">Tamil (தமிழ்)</option>
-                                <option value="Telugu">Telugu (తెలుగు)</option>
-                                <option value="Kannada">Kannada (ಕನ್ನಡ)</option>
-                                <option value="Malayalam">Malayalam (മലയാളം)</option>
-                                <option value="Marathi">Marathi (मराठी)</option>
-                                <option value="Gujarati">Gujarati (ગુજરાતી)</option>
-                                <option value="Bengali">Bengali (বাংলা)</option>
-                                <option value="Punjabi">Punjabi (ਪੰਜਾਬੀ)</option>
-                                <option value="Urdu">Urdu (اردو)</option>
-                                <option value="Odia">Odia (ଓଡ଼ିଆ)</option>
-                                <option value="Assamese">Assamese (অসমীয়া)</option>
-                            </optgroup>
-                            <optgroup label="Other Languages">
-                                <option value="Sanskrit">Sanskrit (संस्कृत)</option>
-                                <option value="Nepali">Nepali (नेपाली)</option>
-                                <option value="Konkani">Konkani (कोंकणी)</option>
-                                <option value="Manipuri">Manipuri (ମଣିପୁରୀ)</option>
-                                <option value="Sindhi">Sindhi (سنڌي)</option>
-                                <option value="Bodo">Bodo (बड़ो)</option>
-                                <option value="Dogri">Dogri (डोगरी)</option>
-                                <option value="Maithili">Maithili (मैथिली)</option>
-                                <option value="Santali">Santali (ᱥᱟᱱᱛᱟᱞᱤ)</option>
-                            </optgroup>
-                            <optgroup label="Dialects">
-                                <option value="Bhojpuri">Bhojpuri (भोजपुरी)</option>
-                                <option value="Bundelkhandi">Bundelkhandi (बुंदेलखंडी)</option>
-                                <option value="Awadhi">Awadhi (अवधी)</option>
-                                <option value="Magahi">Magahi (मगही)</option>
-                                <option value="Angika">Angika (अंगिका)</option>
-                                <option value="Chhattisgarhi">Chhattisgarhi (छत्तीसगढ़ी)</option>
-                                <option value="Bagheli">Bagheli (बघेली)</option>
-                                <option value="Gondi">Gondi (गोंडी)</option>
-                                <option value="Tulu">Tulu (ತುಳು)</option>
-                            </optgroup>
-                        </select>
+                        <div class="select-wrapper">
+                            <select id="target-lang" onchange="translateRealTime()">
+                                <optgroup label="International">
+                                    <option value="English">English</option>
+                                </optgroup>
+                                <optgroup label="Major Languages">
+                                    <option value="Hindi" selected>Hindi (हिंदी)</option>
+                                    <option value="Tamil">Tamil (தமிழ்)</option>
+                                    <option value="Telugu">Telugu (తెలుగు)</option>
+                                    <option value="Kannada">Kannada (ಕನ್ನಡ)</option>
+                                    <option value="Malayalam">Malayalam (മലയാളം)</option>
+                                    <option value="Marathi">Marathi (मराठी)</option>
+                                    <option value="Gujarati">Gujarati (ગુજરાતી)</option>
+                                    <option value="Bengali">Bengali (বাংলা)</option>
+                                    <option value="Punjabi">Punjabi (ਪੰਜਾਬੀ)</option>
+                                    <option value="Urdu">Urdu (اردو)</option>
+                                    <option value="Odia">Odia (ଓଡ଼ିଆ)</option>
+                                    <option value="Assamese">Assamese (অসমীয়া)</option>
+                                </optgroup>
+                                <optgroup label="Other Languages">
+                                    <option value="Sanskrit">Sanskrit (संस्कृत)</option>
+                                    <option value="Nepali">Nepali (नेपाली)</option>
+                                    <option value="Konkani">Konkani (कोंकणी)</option>
+                                    <option value="Manipuri">Manipuri (ಮଣିପୁರୀ)</option>
+                                    <option value="Sindhi">Sindhi (سنڌي)</option>
+                                    <option value="Bodo">Bodo (बड़ो)</option>
+                                    <option value="Dogri">Dogri (डोगरी)</option>
+                                    <option value="Maithili">Maithili (मैथिली)</option>
+                                    <option value="Santali">Santali (ᱥᱟᱱᱛᱟᱞᱤ)</option>
+                                </optgroup>
+                                <optgroup label="Dialects">
+                                    <option value="Bhojpuri">Bhojpuri (भोजपुरी)</option>
+                                    <option value="Bundelkhandi">Bundelkhandi (बुंदेलखंडी)</option>
+                                    <option value="Awadhi">Awadhi (अवधी)</option>
+                                    <option value="Magahi">Magahi (मगही)</option>
+                                    <option value="Angika">Angika (अंगिका)</option>
+                                    <option value="Chhattisgarhi">Chhattisgarhi (छत्तीसगढ़ी)</option>
+                                    <option value="Bagheli">Bagheli (बघेली)</option>
+                                    <option value="Gondi">Gondi (गोंडी)</option>
+                                    <option value="Tulu">Tulu (ತುಳು)</option>
+                                </optgroup>
+                            </select>
+                        </div>
                     </div>
-                    <textarea id="target-text" placeholder="Translation will appear here..." readonly></textarea>
-                    <div class="char-count">
-                        <span>Characters: <strong id="target-count">0</strong></span>
+
+                    <div class="textarea-container">
+                        <textarea id="target-text" placeholder="Translation will appear here instantly..." readonly></textarea>
                     </div>
-                    <div class="controls">
-                        <button class="success-btn" onclick="copyTarget()">📋 Copy</button>
-                        <button class="accent-btn" id="text-speak-btn" onclick="speakTargetText()" style="background: linear-gradient(135deg, var(--india-blue) 0%, var(--primary) 100%); color: white;">🔊 Speak</button>
-                        <button class="swap-button" onclick="swapLanguages()">🔄 Swap Languages</button>
+
+                    <div class="char-count-section">
+                        <div class="char-count-text">
+                            <span>Translated Length</span>
+                            <span><strong id="target-count">0</strong> chars</span>
+                        </div>
+                        <div style="height:6px;"></div> <!-- visual spacing consistency -->
+                    </div>
+
+                    <div class="controls-grid">
+                        <button class="action-btn btn-copy" onclick="copyTarget()">📋 Copy</button>
+                        <button class="action-btn btn-speak" id="text-speak-btn" onclick="speakTargetText()">🔊 Speak</button>
+                    </div>
+
+                    <!-- Pulse equalizer animation for playing text -->
+                    <div class="tts-waveform" id="tts-audio-waveform">
+                        <div class="waveform-bar"></div>
+                        <div class="waveform-bar"></div>
+                        <div class="waveform-bar"></div>
+                        <div class="waveform-bar"></div>
+                        <div class="waveform-bar"></div>
+                        <div class="waveform-bar"></div>
+                        <div class="waveform-bar"></div>
+                        <div class="waveform-bar"></div>
+                        <div class="waveform-bar"></div>
+                        <div class="waveform-bar"></div>
                     </div>
                 </div>
             </div>
+            
             <div class="error-message" id="error-message"></div>
+            
             <div class="loading" id="loading">
                 <div class="spinner"></div>
-                <span>Translating...</span>
+                <span>Translating languages...</span>
+            </div>
+            
+            <!-- Word of the Day Section -->
+            <div class="wotd-card animated-slide-left">
+                <div class="wotd-header">🌟 Word of the Day</div>
+                <div class="wotd-word" id="wotd-text">वसुधैव कुटुम्बकम्</div>
+                <div class="wotd-meaning" id="wotd-meaning">"The world is one family"</div>
+                <div class="wotd-origin" id="wotd-origin">Sanskrit Proverb</div>
             </div>
         </div>
 
-
-
+        <!-- 📄 DOCUMENT TRANSLATION TAB -->
         <div id="file-tab" class="tab-content">
             <div class="panel">
                 <div class="panel-header">
                     <span class="panel-icon">📄</span>
                     <h2>Translate Documents</h2>
                 </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                <div class="doc-layout-grid">
                     <div class="language-selector">
-                        <label for="file-source-lang">From:</label>
-                        <select id="file-source-lang">
-                            <optgroup label="International">
-                                <option value="English">English</option>
-                            </optgroup>
-                            <optgroup label="Major Languages">
-                                <option value="Hindi">Hindi (हिंदी)</option>
+                        <label for="file-source-lang">🌐 Source Language:</label>
+                        <div class="select-wrapper">
+                            <select id="file-source-lang">
+                                <optgroup label="International">
+                                    <option value="English">English</option>
+                                </optgroup>
+                                <optgroup label="Major Languages">
+                                    <option value="Hindi">Hindi (हिंदी)</option>
+                                    <option value="Tamil">Tamil (தமிழ்)</option>
+                                    <option value="Telugu">Telugu (తెలుగు)</option>
+                                    <option value="Kannada">Kannada (ಕನ್ನಡ)</option>
+                                    <option value="Malayalam">Malayalam (മലയാളം)</option>
+                                    <option value="Marathi">Marathi (मराठी)</option>
+                                    <option value="Gujarati">Gujarati (ગુજરાતી)</option>
+                                    <option value="Bengali">Bengali (বাংলা)</option>
+                                    <option value="Punjabi">Punjabi (ਪੰਜਾਬੀ)</option>
+                                    <option value="Urdu">Urdu (اردو)</option>
+                                    <option value="Odia">Odia (ଓଡ଼ିଆ)</option>
+                                    <option value="Assamese">Assamese (অસમীया)</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="language-selector">
+                        <label for="file-target-lang">🌐 Target Language:</label>
+                        <div class="select-wrapper">
+                            <select id="file-target-lang">
+                                <option value="Hindi" selected>Hindi (हिंदी)</option>
                                 <option value="Tamil">Tamil (தமிழ்)</option>
                                 <option value="Telugu">Telugu (తెలుగు)</option>
                                 <option value="Kannada">Kannada (ಕನ್ನಡ)</option>
                                 <option value="Malayalam">Malayalam (മലയാളം)</option>
-                                <option value="Marathi">Marathi (मराठी)</option>
-                                <option value="Gujarati">Gujarati (ગુજરાતી)</option>
-                                <option value="Bengali">Bengali (বাংলা)</option>
-                                <option value="Punjabi">Punjabi (ਪੰਜਾਬੀ)</option>
-                                <option value="Urdu">Urdu (اردو)</option>
-                                <option value="Odia">Odia (ଓଡ଼ିଆ)</option>
-                                <option value="Assamese">Assamese (অসমীয়া)</option>
-                            </optgroup>
-                            <optgroup label="Other Languages">
-                                <option value="Sanskrit">Sanskrit (संस्कृत)</option>
-                                <option value="Nepali">Nepali (नेपाली)</option>
-                                <option value="Konkani">Konkani (कोंकणी)</option>
-                                <option value="Manipuri">Manipuri (ମଣିପୁରୀ)</option>
-                                <option value="Sindhi">Sindhi (سنڌي)</option>
-                                <option value="Bodo">Bodo (बड़ो)</option>
-                                <option value="Dogri">Dogri (डोगरी)</option>
-                                <option value="Maithili">Maithili (मैथिली)</option>
-                                <option value="Santali">Santali (ᱥᱟᱱᱛᱟᱞᱤ)</option>
-                            </optgroup>
-                            <optgroup label="Dialects">
-                                <option value="Bhojpuri">Bhojpuri (भोजपुरी)</option>
-                                <option value="Bundelkhandi">Bundelkhandi (बुंदेलखंडी)</option>
-                                <option value="Awadhi">Awadhi (अवधी)</option>
-                                <option value="Magahi">Magahi (मगही)</option>
-                                <option value="Angika">Angika (अंगिका)</option>
-                                <option value="Chhattisgarhi">Chhattisgarhi (छत्तीसगढ़ी)</option>
-                                <option value="Bagheli">Bagheli (बघेली)</option>
-                                <option value="Gondi">Gondi (गोंडी)</option>
-                                <option value="Tulu">Tulu (ತುಳು)</option>
-                            </optgroup>
-                        </select>
-                    </div>
-                    <div class="language-selector">
-                        <label for="file-target-lang">To:</label>
-                        <select id="file-target-lang">
-                            <option value="Hindi" selected>Hindi (हिंदी)</option>
-                            <option value="Tamil">Tamil (தമிழ்)</option>
-                            <option value="Telugu">Telugu (తెలుగు)</option>
-                            <option value="Kannada">Kannada (ಕನ್ನಡ)</option>
-                            <option value="Malayalam">Malayalam (മലയാളം)</option>
-                        </select>
+                            </select>
+                        </div>
                     </div>
                 </div>
-                <div class="file-upload" onclick="document.getElementById('file-input').click()">
+                
+                <div class="file-upload-zone" onclick="document.getElementById('file-input').click()">
                     <input id="file-input" type="file" accept=".pdf" onchange="handleFileUpload()">
-                    <span class="file-upload-icon">📁</span>
-                    <p class="file-upload-text">Click to upload or drag & drop</p>
-                    <p class="file-upload-subtext">PDF files up to 10MB</p>
+                    <div class="file-icon-wrapper">📁</div>
+                    <p class="file-upload-text">Click to upload or drag & drop document</p>
+                    <p class="file-upload-subtext">PDF files only (maximum size 10MB)</p>
                 </div>
                 <div id="file-error" class="error-message"></div>
             </div>
         </div>
 
+        <!-- 📋 HISTORY TAB -->
         <div id="history-tab" class="tab-content">
             <div class="panel">
                 <div class="panel-header">
@@ -994,15 +1681,109 @@
                     <h2>Translation History</h2>
                 </div>
                 <ul class="history-list" id="history-list">
-                    <li style="text-align: center; color: var(--text-light); padding: 40px 20px;">
-                        No translations yet. Start translating to see history!
+                    <li style="text-align: center; color: var(--text-sub); padding: 50px 20px; font-weight: 500;">
+                        📝 No translations history found. Translate text to save history entries!
                     </li>
                 </ul>
-                <button class="secondary-btn" onclick="clearHistory()" style="width: 100%; margin-top: 20px;">🗑️ Clear All History</button>
+                <button class="clear-all-history-btn" onclick="clearHistory()">🗑️ Clear All Saved History</button>
+            </div>
+        </div>
+
+        <!-- 📚 RESOURCES TAB -->
+        <div id="resources-tab" class="tab-content">
+            <div class="panel resources-panel">
+                <div class="panel-header">
+                    <span class="panel-icon">📚</span>
+                    <h2>Languages & Dialects Resource Center</h2>
+                </div>
+                
+                <div class="resources-layout">
+                    <div class="resource-sidebar">
+                        <input type="text" id="resource-search" placeholder="Search languages..." onkeyup="filterResources()">
+                        <div class="resource-list" id="resource-list">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                    <div class="resource-content" id="resource-detail">
+                        <div class="resource-empty-state">
+                            <span style="font-size: 3.5em; margin-bottom: 15px;">🌍</span>
+                            <h3>Select a language to explore</h3>
+                            <p style="margin-top: 10px;">Discover the rich linguistic diversity of India</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- Indian Monuments Silhouette Footer -->
+    <div class="monuments-footer">
+        <svg viewBox="0 0 1200 150" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" class="monuments-svg">
+            <!-- India Gate -->
+            <path d="M 680 150 L 680 90 L 690 90 L 690 85 L 695 85 L 695 60 L 705 60 L 705 55 L 710 55 L 710 50 L 740 50 L 740 55 L 745 55 L 745 60 L 755 60 L 755 85 L 760 85 L 760 90 L 770 90 L 770 150 Z" fill="var(--monument-fill-1)" />
+            <path d="M 698 150 L 698 105 A 27 27 0 0 1 752 105 L 752 150 Z" fill="var(--bg-gradient)" />
+            
+            <!-- Taj Mahal -->
+            <path d="M 350 150 L 350 110 L 370 110 L 370 100 L 368 100 L 368 85 L 398 85 L 398 100 L 396 100 L 396 110 L 454 110 L 454 100 L 452 100 L 452 85 L 482 85 L 482 100 L 480 100 L 480 110 L 500 110 L 500 150 Z" fill="var(--monument-fill-2)" />
+            <path d="M 405 85 L 405 80 C 405 65, 412 55, 425 55 C 438 55, 445 65, 445 80 L 445 85 Z" fill="var(--monument-fill-2)" />
+            <path d="M 378 85 L 378 82 C 378 75, 382 70, 388 70 C 394 70, 398 75, 398 82 L 398 85 Z" fill="var(--monument-fill-2)" />
+            <path d="M 452 85 L 452 82 C 452 75, 456 70, 462 70 C 468 70, 472 75, 472 82 L 472 85 Z" fill="var(--monument-fill-2)" />
+            <path d="M 335 150 L 340 150 L 340 60 L 335 60 Z" fill="var(--monument-fill-2)" opacity="0.8" />
+            <path d="M 510 150 L 515 150 L 515 60 L 510 60 Z" fill="var(--monument-fill-2)" opacity="0.8" />
+
+            <!-- Qutub Minar -->
+            <path d="M 120 150 L 135 40 L 140 40 L 140 35 L 133 35 L 133 30 L 142 30 L 145 150 Z" fill="var(--monument-fill-1)" />
+            
+            <!-- Lotus Temple curves -->
+            <path d="M 900 150 Q 920 100 940 120 Q 960 90 980 130 Q 1000 110 1020 150 Z" fill="var(--monument-fill-2)" opacity="0.75" />
+            
+            <!-- Waves -->
+            <path d="M 0 135 Q 300 120 600 135 T 1200 135 L 1200 150 L 0 150 Z" fill="var(--monument-fill-3)" opacity="0.5" />
+        </svg>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-fact-box">
+                <h4>💡 Did you know?</h4>
+                <p id="footer-fact">India has 22 officially recognized languages and hundreds of dialects.</p>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2026 Bhasha Indian Language Translator. Built with ❤️ in India.<br>
+                Press <span style="color: var(--saffron); font-weight:bold;">?</span> or use the floating button for Keyboard Shortcuts.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating Help Button -->
+    <button class="help-btn" onclick="toggleHelpModal()" title="Keyboard Shortcuts">⌨️</button>
+
+    <!-- Help Modal -->
+    <div class="modal-overlay" id="help-modal" onclick="if(event.target===this) toggleHelpModal()">
+        <div class="modal-content">
+            <button class="modal-close" onclick="toggleHelpModal()">×</button>
+            <h3>Keyboard Shortcuts</h3>
+            <div class="shortcut-item">
+                <span>Translate text</span>
+                <span class="shortcut-key">Ctrl + Enter</span>
+            </div>
+            <div class="shortcut-item">
+                <span>Swap Languages</span>
+                <span class="shortcut-key">Ctrl + S</span>
+            </div>
+            <div class="shortcut-item">
+                <span>Clear Text</span>
+                <span class="shortcut-key">Ctrl + D</span>
+            </div>
+            <div class="shortcut-item">
+                <span>Show/Hide Shortcuts</span>
+                <span class="shortcut-key">?</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- App JavaScript Logic -->
     <script>
         const API_URL = 'http://localhost:8000';
         let translationHistory = JSON.parse(localStorage.getItem('translationHistory')) || [];
@@ -1010,17 +1791,84 @@
         
         // Speech Synthesis Setup (TTS)
         const speechSynthesis = window.speechSynthesis;
-        let activeAudio = null; // store current audio object to cancel if needed
+        let activeAudio = null; 
         
+        // Setup Theme on load
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme') || 'light-theme';
+            document.documentElement.className = savedTheme;
+            updateThemeUI(savedTheme);
+            displayHistory();
+            initExtensions();
+        });
+
+        function initExtensions() {
+            // Word of the Day & Facts logic
+            const facts = [
+                "India has 22 officially recognized languages and over 19,500 languages or dialects are spoken as mother tongues.",
+                "Tamil is widely considered one of the oldest surviving classical languages in the world.",
+                "The Indian constitution does not designate any single language as the national language.",
+                "Sanskrit is the only language that is mathematically structured and was considered by early computer scientists as ideal for programming.",
+                "Bengali is the 7th most spoken language globally."
+            ];
+            document.getElementById('footer-fact').textContent = facts[Math.floor(Math.random() * facts.length)];
+            
+            // Keyboard Shortcuts
+            document.addEventListener('keydown', (e) => {
+                if (e.ctrlKey && e.key === 'Enter') {
+                    translateRealTime();
+                } else if (e.ctrlKey && e.key.toLowerCase() === 's') {
+                    e.preventDefault();
+                    swapLanguages();
+                } else if (e.ctrlKey && e.key.toLowerCase() === 'd') {
+                    e.preventDefault();
+                    clearSource();
+                } else if (e.key === '?' && e.target.tagName !== 'TEXTAREA' && e.target.tagName !== 'INPUT') {
+                    toggleHelpModal();
+                } else if (e.key === 'Escape') {
+                    const modal = document.getElementById('help-modal');
+                    if (modal.classList.contains('active')) toggleHelpModal();
+                }
+            });
+        }
+        
+        function toggleHelpModal() {
+            const modal = document.getElementById('help-modal');
+            modal.classList.toggle('active');
+        }
+
+        function toggleTheme() {
+            const isDark = document.documentElement.classList.contains('dark-theme');
+            const newTheme = isDark ? 'light-theme' : 'dark-theme';
+            document.documentElement.className = newTheme;
+            localStorage.setItem('theme', newTheme);
+            updateThemeUI(newTheme);
+            showToast(`🎨 Theme switched to ${newTheme === 'dark-theme' ? 'Ratri (Night)' : 'Tejas (Day)'}!`);
+        }
+
+        function updateThemeUI(theme) {
+            const btnText = document.getElementById('theme-text');
+            const btnIcon = document.getElementById('theme-icon');
+            
+            if (theme === 'dark-theme') {
+                btnText.textContent = 'Tejas Mode';
+                btnIcon.innerHTML = `<path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m11.314 11.314l.707.707M12 5a7 7 0 100 14 7 7 0 000-14z" />`;
+            } else {
+                btnText.textContent = 'Ratri Mode';
+                btnIcon.innerHTML = `<path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58c-.39-.39-1.03-.39-1.41 0s-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37c-.39-.39-1.03-.39-1.41 0s-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41l-1.06-1.06zm1.06-10.96c.39-.39.39-1.03 0-1.41s-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.01c.39-.39.39-1.03 0-1.41s-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/>`;
+            }
+        }
+
         function speakTargetText() {
             const text = document.getElementById('target-text').value.trim();
             if (!text) {
-                showToast('⚠️ No translation to speak');
+                showToast('⚠️ No translation to speak', true);
                 return;
             }
             
             const targetLang = document.getElementById('target-lang').value;
             const speakBtn = document.getElementById('text-speak-btn');
+            const wave = document.getElementById('tts-audio-waveform');
             
             // Stop any ongoing playbacks
             if (activeAudio) {
@@ -1035,42 +1883,17 @@
             }
             
             speakBtn.classList.add('playing');
-            speakBtn.textContent = '🔊 Playing...';
+            speakBtn.innerHTML = '⏸️ Playing...';
+            wave.classList.add('active');
             
-            // Google TTS code mapping
             const googleLangCodes = {
-                'English': 'en',
-                'Hindi': 'hi',
-                'Tamil': 'ta',
-                'Telugu': 'te',
-                'Kannada': 'kn',
-                'Malayalam': 'ml',
-                'Marathi': 'mr',
-                'Gujarati': 'gu',
-                'Bengali': 'bn',
-                'Punjabi': 'pa',
-                'Urdu': 'ur',
-                'Odia': 'or',
-                'Assamese': 'as',
-                'Sanskrit': 'sa',
-                'Nepali': 'ne',
-                'Konkani': 'hi',
-                'Manipuri': 'hi',
-                'Sindhi': 'sd',
-                'Bodo': 'hi',
-                'Dogri': 'hi',
-                'Maithili': 'hi',
-                'Santali': 'hi',
-                'Bhojpuri': 'hi',
-                'Bundelkhandi': 'hi',
-                'Awadhi': 'hi',
-                'Magahi': 'hi',
-                'Angika': 'hi',
-                'Chhattisgarhi': 'hi',
-                'Bagheli': 'hi',
-                'Gondi': 'te',
-                'Tulu': 'kn',
-                'Hinglish': 'hi'
+                'English': 'en', 'Hindi': 'hi', 'Tamil': 'ta', 'Telugu': 'te', 'Kannada': 'kn',
+                'Malayalam': 'ml', 'Marathi': 'mr', 'Gujarati': 'gu', 'Bengali': 'bn', 'Punjabi': 'pa',
+                'Urdu': 'ur', 'Odia': 'or', 'Assamese': 'as', 'Sanskrit': 'sa', 'Nepali': 'ne',
+                'Konkani': 'hi', 'Manipuri': 'hi', 'Sindhi': 'sd', 'Bodo': 'hi', 'Dogri': 'hi',
+                'Maithili': 'hi', 'Santali': 'hi', 'Bhojpuri': 'hi', 'Bundelkhandi': 'hi',
+                'Awadhi': 'hi', 'Magahi': 'hi', 'Angika': 'hi', 'Chhattisgarhi': 'hi',
+                'Bagheli': 'hi', 'Gondi': 'te', 'Tulu': 'kn', 'Hinglish': 'hi'
             };
 
             const ttsUrl = `${API_URL}/api/tts?text=${encodeURIComponent(text)}&lang=${encodeURIComponent(targetLang)}`;
@@ -1079,40 +1902,34 @@
             
             activeAudio.onended = () => {
                 speakBtn.classList.remove('playing');
-                speakBtn.textContent = '🔊 Speak';
+                speakBtn.innerHTML = '🔊 Speak';
+                wave.classList.remove('active');
             };
             
             activeAudio.onerror = (e) => {
-                console.error('Google TTS error, using browser synthesis fallback:', e);
-                fallbackToBrowserSpeechText(text, targetLang, speakBtn);
+                console.error('Google TTS error, fallback to browser synthesis:', e);
+                fallbackToBrowserSpeechText(text, targetLang, speakBtn, wave);
             };
 
             activeAudio.play().catch((error) => {
-                console.error('Audio play failed, using browser synthesis fallback:', error);
-                fallbackToBrowserSpeechText(text, targetLang, speakBtn);
+                console.error('Audio play failed, fallback to browser synthesis:', error);
+                fallbackToBrowserSpeechText(text, targetLang, speakBtn, wave);
             });
         }
 
-        function fallbackToBrowserSpeechText(text, targetLang, speakBtn) {
+        function fallbackToBrowserSpeechText(text, targetLang, speakBtn, wave) {
             if (!speechSynthesis) {
                 speakBtn.classList.remove('playing');
-                speakBtn.textContent = '🔊 Speak';
+                speakBtn.innerHTML = '🔊 Speak';
+                wave.classList.remove('active');
                 return;
             }
             
             const utterance = new SpeechSynthesisUtterance(text);
             const languageCodes = {
-                'English': 'en-US',
-                'Hindi': 'hi-IN',
-                'Tamil': 'ta-IN',
-                'Telugu': 'te-IN',
-                'Kannada': 'kn-IN',
-                'Malayalam': 'ml-IN',
-                'Marathi': 'mr-IN',
-                'Gujarati': 'gu-IN',
-                'Bengali': 'bn-IN',
-                'Punjabi': 'pa-IN',
-                'Urdu': 'ur-IN'
+                'English': 'en-US', 'Hindi': 'hi-IN', 'Tamil': 'ta-IN', 'Telugu': 'te-IN',
+                'Kannada': 'kn-IN', 'Malayalam': 'ml-IN', 'Marathi': 'mr-IN', 'Gujarati': 'gu-IN',
+                'Bengali': 'bn-IN', 'Punjabi': 'pa-IN', 'Urdu': 'ur-IN'
             };
             
             utterance.lang = languageCodes[targetLang] || 'hi-IN';
@@ -1122,12 +1939,14 @@
             
             utterance.onend = () => {
                 speakBtn.classList.remove('playing');
-                speakBtn.textContent = '🔊 Speak';
+                speakBtn.innerHTML = '🔊 Speak';
+                wave.classList.remove('active');
             };
             
             utterance.onerror = (event) => {
                 speakBtn.classList.remove('playing');
-                speakBtn.textContent = '🔊 Speak';
+                speakBtn.innerHTML = '🔊 Speak';
+                wave.classList.remove('active');
             };
             
             speechSynthesis.speak(utterance);
@@ -1139,6 +1958,12 @@
             
             document.getElementById(tabName).classList.add('active');
             event.target.classList.add('active');
+            
+            if (tabName === 'resources-tab') {
+                if (document.getElementById('resource-list').children.length === 0) {
+                    renderResourceList();
+                }
+            }
         }
 
         function translateRealTime() {
@@ -1160,6 +1985,7 @@
             const sourceLang = document.getElementById('source-lang').value;
             const targetLang = document.getElementById('target-lang').value;
             const errorDiv = document.getElementById('error-message');
+            const chakra = document.getElementById('main-chakra');
 
             if (!sourceText) {
                 document.getElementById('target-text').value = '';
@@ -1167,12 +1993,13 @@
             }
 
             if (sourceText.length > 5000) {
-                showError('Text exceeds 5000 characters limit');
+                showError('Text length exceeds the 5000 characters limit');
                 return;
             }
 
             showLoading(true);
             errorDiv.classList.remove('active');
+            chakra.classList.add('spinning-fast');
 
             try {
                 const response = await fetch(`${API_URL}/api/translate/text`, {
@@ -1189,7 +2016,7 @@
                 });
 
                 if (!response.ok) {
-                    throw new Error(`API error: ${response.status}`);
+                    throw new Error(`Server returned code: ${response.status}`);
                 }
 
                 const data = await response.json();
@@ -1197,11 +2024,11 @@
                 document.getElementById('target-count').textContent = data.translated_text.length;
 
                 addToHistory(sourceText, data.translated_text, sourceLang, targetLang);
-                showToast('✨ Translation complete!');
             } catch (error) {
-                showError(`⚠️ Translation failed: ${error.message}`);
+                showError(`⚠️ Connection failed. Make sure backend API is running: ${error.message}`);
             } finally {
                 showLoading(false);
+                chakra.classList.remove('spinning-fast');
             }
         }
 
@@ -1218,13 +2045,22 @@
             document.getElementById('source-count').textContent = '0';
             document.getElementById('target-count').textContent = '0';
             document.getElementById('source-fill').style.width = '0%';
+            const errorDiv = document.getElementById('error-message');
+            errorDiv.classList.remove('active');
+            
+            if (activeAudio) {
+                activeAudio.pause();
+                document.getElementById('text-speak-btn').classList.remove('playing');
+                document.getElementById('text-speak-btn').innerHTML = '🔊 Speak';
+                document.getElementById('tts-audio-waveform').classList.remove('active');
+            }
         }
 
         function copySource() {
             const text = document.getElementById('source-text').value;
             if (text) {
                 navigator.clipboard.writeText(text);
-                showToast('✅ Source text copied!');
+                showToast('📋 Source text copied to clipboard!');
             }
         }
 
@@ -1232,16 +2068,20 @@
             const text = document.getElementById('target-text').value;
             if (text) {
                 navigator.clipboard.writeText(text);
-                showToast('✅ Translated text copied!');
+                showToast('✨ Translated text copied to clipboard!');
             }
         }
 
         function swapLanguages() {
-            const sourceLang = document.getElementById('source-lang').value;
-            const targetLang = document.getElementById('target-lang').value;
+            const sourceLangSelect = document.getElementById('source-lang');
+            const targetLangSelect = document.getElementById('target-lang');
+            
+            const sourceLang = sourceLangSelect.value;
+            const targetLang = targetLangSelect.value;
 
-            document.getElementById('source-lang').value = targetLang;
-            document.getElementById('target-lang').value = sourceLang;
+            // Simple validation since dialects may not exist in target language groups
+            sourceLangSelect.value = targetLang;
+            targetLangSelect.value = sourceLang;
 
             const sourceText = document.getElementById('source-text').value;
             document.getElementById('source-text').value = document.getElementById('target-text').value;
@@ -1251,9 +2091,10 @@
             if (document.getElementById('source-text').value.trim()) {
                 translateRealTime();
             }
+            showToast('🔄 Languages Swapped!');
         }
 
-        function showLoading(show, message = "Translating...") {
+        function showLoading(show, message = "Translating text...") {
             const loadingEl = document.getElementById('loading');
             loadingEl.querySelector('span').textContent = message;
             loadingEl.classList.toggle('active', show);
@@ -1265,25 +2106,37 @@
             errorDiv.classList.add('active');
         }
 
-        function showToast(message) {
+        function showToast(message, isError = false) {
             const toast = document.createElement('div');
-            toast.className = 'toast';
-            toast.textContent = message;
+            toast.className = 'toast' + (isError ? ' error' : '');
+            toast.style.overflow = 'hidden';
+            toast.innerHTML = `
+                ${message}
+                <div class="toast-progress"></div>
+            `;
             document.body.appendChild(toast);
 
             setTimeout(() => {
-                toast.style.animation = 'slideInRight 0.4s ease-out reverse';
+                toast.style.animation = 'slideInRight 0.4s ease-in reverse forwards';
                 setTimeout(() => toast.remove(), 400);
-            }, 2500);
+            }, 3000);
         }
 
         function addToHistory(source, target, sourceLang, targetLang) {
+            // Check duplicates in last history entry to avoid spamming same translation
+            if (translationHistory.length > 0) {
+                const last = translationHistory[0];
+                if (last.source === source && last.sourceLang === sourceLang && last.targetLang === targetLang) {
+                    return;
+                }
+            }
+
             const entry = {
-                source: source.substring(0, 60),
-                target: target.substring(0, 60),
+                source: source,
+                target: target,
                 sourceLang,
                 targetLang,
-                timestamp: new Date().toLocaleTimeString()
+                timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
             };
 
             translationHistory.unshift(entry);
@@ -1297,21 +2150,38 @@
         function displayHistory() {
             const historyList = document.getElementById('history-list');
             if (translationHistory.length === 0) {
-                historyList.innerHTML = '<li style="text-align: center; color: var(--text-light); padding: 40px 20px;">No translations yet. Start translating to see history!</li>';
+                historyList.innerHTML = '<li style="text-align: center; color: var(--text-sub); padding: 50px 20px; font-weight: 500;">📝 No translations history found. Translate text to save history entries!</li>';
                 return;
             }
 
-            historyList.innerHTML = translationHistory.map((item, index) => `
-                <li class="history-item" onclick="restoreHistoryItem(${index})">
-                    <div class="history-content">
-                        <div class="history-langs">🔀 ${item.sourceLang} → ${item.targetLang}</div>
-                        <div class="history-text">📍 ${item.source}${item.source.length === 60 ? '...' : ''}</div>
-                        <div class="history-text">✓ ${item.target}${item.target.length === 60 ? '...' : ''}</div>
-                        <div class="history-meta">⏰ ${item.timestamp}</div>
+            historyList.innerHTML = translationHistory.map((item, index) => {
+                const cleanSource = item.source.length > 80 ? item.source.substring(0, 80) + '...' : item.source;
+                const cleanTarget = item.target.length > 80 ? item.target.substring(0, 80) + '...' : item.target;
+                
+                return `
+                <li class="history-card" onclick="restoreHistoryItem(${index})">
+                    <div class="history-details">
+                        <div class="history-header">
+                            <span class="lang-badge">${item.sourceLang} ➔ ${item.targetLang}</span>
+                            <span class="history-time">⏰ ${item.timestamp}</span>
+                        </div>
+                        <div class="history-snippets">
+                            <div class="snippet-src">📍 ${escapeHtml(cleanSource)}</div>
+                            <div class="snippet-translated">✓ ${escapeHtml(cleanTarget)}</div>
+                        </div>
                     </div>
-                    <button class="history-delete" onclick="deleteHistoryItem(event, ${index})">✕</button>
+                    <button class="btn-delete-item" onclick="deleteHistoryItem(event, ${index})" title="Delete entry">✕</button>
                 </li>
-            `).join('');
+            `}).join('');
+        }
+
+        function escapeHtml(text) {
+            return text
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
         }
 
         function restoreHistoryItem(index) {
@@ -1319,9 +2189,13 @@
             document.getElementById('source-text').value = item.source;
             document.getElementById('source-lang').value = item.sourceLang;
             document.getElementById('target-lang').value = item.targetLang;
+            
+            // Click Text tab trigger
             document.querySelectorAll('.tab-button')[0].click();
+            
             updateCharCount();
             translateRealTime();
+            showToast('📋 Translation Restored!');
         }
 
         function deleteHistoryItem(event, index) {
@@ -1333,31 +2207,40 @@
         }
 
         function clearHistory() {
-            if (confirm('Are you sure? This will clear all translation history.')) {
+            if (translationHistory.length === 0) {
+                showToast('⚠️ No history items to clear', true);
+                return;
+            }
+            if (confirm('Are you sure you want to clear all translation history?')) {
                 translationHistory = [];
                 localStorage.removeItem('translationHistory');
                 displayHistory();
-                showToast('🗑️ History cleared!');
+                showToast('🗑️ Translation history cleared!');
             }
         }
 
         async function handleFileUpload() {
             const fileInput = document.getElementById('file-input');
             const file = fileInput.files[0];
+            const errorDiv = document.getElementById('file-error');
 
             if (!file) return;
 
             if (file.type !== 'application/pdf') {
-                showError('Only PDF files are supported');
+                showFileError('Only PDF files are supported');
+                fileInput.value = '';
                 return;
             }
 
             if (file.size > 10 * 1024 * 1024) {
-                showError('File size must be less than 10MB');
+                showFileError('File size exceeds the 10MB limit');
+                fileInput.value = '';
                 return;
             }
 
-            showLoading(true, 'Translating, please wait...');
+            errorDiv.classList.remove('active');
+            showLoading(true, 'Translating document paragraphs, please wait...');
+
             const formData = new FormData();
             formData.append('file', file);
             formData.append('source_lang', document.getElementById('file-source-lang').value);
@@ -1370,7 +2253,7 @@
                 });
 
                 if (!response.ok) {
-                    throw new Error(`Upload failed: ${response.status}`);
+                    throw new Error(`Upload failed. Code: ${response.status}`);
                 }
 
                 const blob = await response.blob();
@@ -1383,42 +2266,283 @@
                 window.URL.revokeObjectURL(url);
                 a.remove();
 
-                showToast('📄 PDF translated & downloaded!');
+                showToast('📄 PDF translated and downloaded successfully!');
             } catch (error) {
-                showError(`PDF translation failed: ${error.message}`);
+                showFileError(`PDF translation failed: ${error.message}. Ensure backend is running.`);
             } finally {
                 showLoading(false);
                 fileInput.value = '';
             }
         }
 
-        // Initialize
-        displayHistory();
-    </script>
-    <!-- Indian Monuments Footer Silhouette -->
-    <div class="monuments-footer">
-        <svg viewBox="0 0 1200 150" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" class="monuments-svg">
-            <!-- India Gate -->
-            <path d="M 680 150 L 680 90 L 690 90 L 690 85 L 695 85 L 695 60 L 705 60 L 705 55 L 710 55 L 710 50 L 740 50 L 740 55 L 745 55 L 745 60 L 755 60 L 755 85 L 760 85 L 760 90 L 770 90 L 770 150 Z" fill="var(--india-saffron)" opacity="0.15" />
-            <path d="M 698 150 L 698 105 A 27 27 0 0 1 752 105 L 752 150 Z" fill="var(--bg-light)" opacity="0.9" />
-            
-            <!-- Taj Mahal -->
-            <path d="M 350 150 L 350 110 L 370 110 L 370 100 L 368 100 L 368 85 L 398 85 L 398 100 L 396 100 L 396 110 L 454 110 L 454 100 L 452 100 L 452 85 L 482 85 L 482 100 L 480 100 L 480 110 L 500 110 L 500 150 Z" fill="var(--india-green)" opacity="0.15" />
-            <path d="M 405 85 L 405 80 C 405 65, 412 55, 425 55 C 438 55, 445 65, 445 80 L 445 85 Z" fill="var(--india-green)" opacity="0.2" />
-            <path d="M 378 85 L 378 82 C 378 75, 382 70, 388 70 C 394 70, 398 75, 398 82 L 398 85 Z" fill="var(--india-green)" opacity="0.2" />
-            <path d="M 452 85 L 452 82 C 452 75, 456 70, 462 70 C 468 70, 472 75, 472 82 L 472 85 Z" fill="var(--india-green)" opacity="0.2" />
-            <path d="M 335 150 L 340 150 L 340 60 L 335 60 Z" fill="var(--india-green)" opacity="0.12" />
-            <path d="M 510 150 L 515 150 L 515 60 L 510 60 Z" fill="var(--india-green)" opacity="0.12" />
+        function showFileError(message) {
+            const errorDiv = document.getElementById('file-error');
+            errorDiv.textContent = message;
+            errorDiv.classList.add('active');
+        }
 
-            <!-- Qutub Minar -->
-            <path d="M 120 150 L 135 40 L 140 40 L 140 35 L 133 35 L 133 30 L 142 30 L 145 150 Z" fill="var(--india-saffron)" opacity="0.1" />
+        // Resource Data
+        const languageData = {
+            "Hindi": { 
+                type: "Language", native: "हिंदी", family: "Indo-Aryan", script: "Devanagari", speakers: "528M+", region: "North & Central India", 
+                desc: "Hindi is an Indo-Aryan language spoken chiefly in North India. It serves as the lingua franca of the Hindi Belt.",
+                history: "Evolved from Sanskrit through Prakrit and Apabhramsha. It is heavily influenced by Persian, Arabic, and Turkish vocabulary due to centuries of Mughal rule, resulting in the Hindustani register.",
+                greeting: "नमस्ते (Namaste)",
+                features: ["Subject-Object-Verb (SOV) word order", "Gendered nouns (Masculine/Feminine)", "Split ergativity in past tenses"]
+            },
+            "Tamil": { 
+                type: "Language", native: "தமிழ்", family: "Dravidian", script: "Tamil", speakers: "69M+", region: "Tamil Nadu", 
+                desc: "Tamil is one of the longest-surviving classical languages in the world.",
+                history: "Recorded Tamil literature has been documented for over 2000 years. The earliest period of Tamil literature, Sangam literature, is dated from ca. 300 BC.",
+                greeting: "வணக்கம் (Vanakkam)",
+                features: ["Agglutinative language", "No grammatical gender for inanimate objects", "Diglossia (formal vs spoken forms)"]
+            },
+            "Telugu": { 
+                type: "Language", native: "తెలుగు", family: "Dravidian", script: "Telugu", speakers: "81M+", region: "Andhra Pradesh, Telangana", 
+                desc: "Telugu is a Dravidian language native to India. It is known as the 'Italian of the East' due to all words ending in vowels.",
+                history: "Telugu has an uninterrupted literary tradition spanning over a millennium. It flourished under the Vijayanagara Empire.",
+                greeting: "నమస్కారం (Namaskaram)",
+                features: ["Vowel harmony (words end in vowels)", "Agglutinative characteristics", "Extensive Sanskrit vocabulary"]
+            },
+            "Kannada": { 
+                type: "Language", native: "ಕನ್ನಡ", family: "Dravidian", script: "Kannada", speakers: "43M+", region: "Karnataka", 
+                desc: "Kannada is a classical language with an unbroken literary history of over a thousand years.",
+                history: "Epigraphia Carnatica contains thousands of inscriptions in Kannada dating back to 450 AD (Halmidi inscription).",
+                greeting: "ನಮಸ್ಕಾರ (Namaskara)",
+                features: ["Highly inflected language", "Three genders: masculine, feminine, neuter", "Complex sandhi (word fusion) rules"]
+            },
+            "Malayalam": { 
+                type: "Language", native: "മലയാളം", family: "Dravidian", script: "Malayalam", speakers: "34M+", region: "Kerala", 
+                desc: "Malayalam is widely spoken in the Indian state of Kerala and the union territories of Lakshadweep and Puducherry.",
+                history: "Originated from Early Middle Tamil and separated into a distinct language between the 9th and 13th centuries.",
+                greeting: "നമസ്കാരം (Namaskaram)",
+                features: ["Lacks personal verb endings", "Heavily influenced by Sanskrit", "Extensive use of conjunct consonants"]
+            },
+            "Marathi": { 
+                type: "Language", native: "मराठी", family: "Indo-Aryan", script: "Devanagari", speakers: "83M+", region: "Maharashtra", 
+                desc: "Marathi is the official language of Maharashtra and one of the 22 scheduled languages of India.",
+                history: "Marathi literature began with saint-poets like Dnyaneshwar and Tukaram. It was the court language of the Maratha Empire.",
+                greeting: "नमस्कार (Namaskar)",
+                features: ["Retains the three genders from Sanskrit", "Uses inclusive and exclusive 'we'", "Distinct 'L' (ळ) consonant"]
+            },
+            "Gujarati": { 
+                type: "Language", native: "ગુજરાતી", family: "Indo-Aryan", script: "Gujarati", speakers: "55M+", region: "Gujarat", 
+                desc: "Gujarati is native to the Indian state of Gujarat and is spoken predominantly by the Gujarati people.",
+                history: "Descended from Old Gujarati (circa 1100–1500 AD), which was the ancestor of modern Gujarati and Rajasthani.",
+                greeting: "નમસ્તે / કેમ છો (Namaste / Kem cho)",
+                features: ["Three genders", "Script lacks the horizontal line (shirorekha)", "Rich tradition of folk literature"]
+            },
+            "Bengali": { 
+                type: "Language", native: "বাংলা", family: "Indo-Aryan", script: "Bengali", speakers: "97M+", region: "West Bengal, Tripura", 
+                desc: "Bengali is an Indo-Aryan language native to the Bengal region of South Asia.",
+                history: "Evolved from Magadhi Prakrit and Apabhramsha. Experienced a Renaissance in the 19th/20th century led by Rabindranath Tagore.",
+                greeting: "নমস্কার (Nomoshkar)",
+                features: ["No gendered verbs/pronouns", "SOV word order", "Rich vowel inventory"]
+            },
+            "Punjabi": { 
+                type: "Language", native: "ਪੰਜਾਬੀ", family: "Indo-Aryan", script: "Gurmukhi", speakers: "33M+", region: "Punjab", 
+                desc: "Punjabi is an Indo-Aryan language spoken by the Punjabi people. It is unusually a tonal language.",
+                history: "Evolved from Shauraseni Prakrit. The Gurmukhi script was standardized by Guru Angad Dev in the 16th century.",
+                greeting: "ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ (Sat Sri Akal)",
+                features: ["Tonal language (rare for Indo-European)", "Agglutinative traits", "Lexical borrowing from Persian/Arabic"]
+            },
+            "Urdu": { 
+                type: "Language", native: "اردو", family: "Indo-Aryan", script: "Perso-Arabic", speakers: "50M+", region: "Across India", 
+                desc: "Urdu is known for its poetic tradition and extensive vocabulary derived from Persian and Arabic.",
+                history: "Developed in the royal courts of the Delhi Sultanate and Mughal Empire. It shares a base with Hindi (Hindustani).",
+                greeting: "آداب (Aadaab) / سلام (Salaam)",
+                features: ["Written right-to-left", "Nastaliq calligraphic style", "Rich poetic tradition (Ghazals)"]
+            },
+            "Odia": { 
+                type: "Language", native: "ଓଡ଼ିଆ", family: "Indo-Aryan", script: "Odia", speakers: "34M+", region: "Odisha", 
+                desc: "Odia is a classical language of India, noted for its rich literary history.",
+                history: "One of the oldest Indo-Aryan languages, showing minimal influence from Persian and Arabic compared to other North Indian languages.",
+                greeting: "ନମସ୍କାର (Namaskar)",
+                features: ["Curved script developed due to writing on palm leaves", "Retains older linguistic features", "No grammatical gender"]
+            },
+            "Assamese": { 
+                type: "Language", native: "অসমীয়া", family: "Indo-Aryan", script: "Assamese", speakers: "15M+", region: "Assam", 
+                desc: "Assamese is an Eastern Indo-Aryan language and serves as the lingua franca of the region.",
+                history: "Its literary tradition traces back to the Charyapadas. The language flourished under the Ahom kingdom.",
+                greeting: "নমস্কাৰ (Nomoskar)",
+                features: ["Unique phonetic traits (e.g., alveolar stops)", "No grammatical gender", "Verb conjugation depends on respect levels"]
+            },
+            "Sanskrit": { 
+                type: "Language", native: "संस्कृत", family: "Indo-Aryan", script: "Devanagari", speakers: "25k (Native)", region: "Historical / Pan-India", 
+                desc: "Sanskrit is the primary liturgical language of Hinduism and the predominant language of most works of Hindu philosophy.",
+                history: "Vedic Sanskrit dates back to the 2nd millennium BCE. Classical Sanskrit was formalized by Panini around 500 BCE.",
+                greeting: "नमस्ते (Namaste) / नमो नमः (Namo Namah)",
+                features: ["Highly inflected", "Three genders and three numbers (singular, dual, plural)", "Elaborate morphophonology (Sandhi)"]
+            },
+            "Nepali": { 
+                type: "Language", native: "नेपाली", family: "Indo-Aryan", script: "Devanagari", speakers: "2.9M+", region: "Sikkim, West Bengal", 
+                desc: "Nepali is the official language of Nepal and is spoken widely in Sikkim and parts of West Bengal in India.",
+                history: "Historically called Khas Kura. It gained prominence during the unification of Nepal in the 18th century.",
+                greeting: "नमस्ते (Namaste)",
+                features: ["Three levels of honorifics", "SOV word order", "Rich oral literature"]
+            },
+            "Bhojpuri": { 
+                type: "Dialect/Language", native: "भोजपुरी", family: "Indo-Aryan", script: "Devanagari", speakers: "50M+", region: "Bihar, UP", 
+                desc: "Bhojpuri is spoken in the Bhojpur-Purvanchal region of India and the Terai region of Nepal.",
+                history: "Originates from Magadhi Prakrit. It has a rich tradition of folk songs, particularly 'Bidesia' and 'Birha'.",
+                greeting: "रउवा के गोड़ लागत तानी (Rauwa ke god lagat tani)",
+                features: ["Complex honorific system", "Verb conjugation relies heavily on the object", "No formal gender distinction for inanimate objects"]
+            },
+            "Awadhi": { 
+                type: "Dialect/Language", native: "अवधी", family: "Indo-Aryan", script: "Devanagari", speakers: "38M+", region: "Awadh (UP)", 
+                desc: "Awadhi is an Eastern Hindi language spoken primarily in the Awadh region of Uttar Pradesh.",
+                history: "Tulsidas wrote the epic 'Ramcharitmanas' in Awadhi in the 16th century, making it a prominent literary language.",
+                greeting: "राम राम (Ram Ram)",
+                features: ["Distinctive past tense markers", "Retains older Indo-Aryan grammatical structures", "Softer phonology compared to Khariboli"]
+            },
+            "Maithili": { 
+                type: "Language", native: "मैथिली", family: "Indo-Aryan", script: "Devanagari / Tirhuta", speakers: "13M+", region: "Bihar", 
+                desc: "Maithili is spoken in the Mithila region of India and Nepal.",
+                history: "Famed for its literary giant Vidyapati in the 14th century. It historically used the beautiful Tirhuta script.",
+                greeting: "प्रणाम (Pranam)",
+                features: ["Complex verbal system showing agreement with subject and object", "Three social tiers of pronouns", "Rich folk traditions"]
+            }
+        };
+        
+        // Populate missing languages dynamically from the DOM dropdowns
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('#source-lang option').forEach(opt => {
+                const val = opt.value;
+                const text = opt.textContent;
+                if (val !== 'English' && !languageData[val]) {
+                    const isDialect = opt.parentElement.label === 'Dialects';
+                    const nativeMatch = text.match(/\((.*?)\)/);
+                    const nativeStr = nativeMatch ? nativeMatch[1] : '';
+                    languageData[val] = {
+                        type: isDialect ? "Dialect" : "Language",
+                        native: nativeStr,
+                        family: "Varies",
+                        script: "Regional",
+                        speakers: "Regional",
+                        region: "Various Parts of India",
+                        desc: `${val} is a vibrant ${isDialect ? 'dialect' : 'language'} that contributes significantly to the linguistic and cultural diversity of its region.`,
+                        history: "Like many regional languages and dialects in India, it has evolved over centuries alongside its local culture, retaining unique vocabulary and idioms.",
+                        greeting: "Namaste / Pranam",
+                        features: ["Rich regional vocabulary", "Unique local idioms and proverbs", "Deeply tied to local culture and traditions"]
+                    };
+                }
+            });
+        });
+
+        function renderResourceList(filter = '') {
+            const list = document.getElementById('resource-list');
+            list.innerHTML = '';
             
-            <!-- Lotus Temple curves -->
-            <path d="M 900 150 Q 920 100 940 120 Q 960 90 980 130 Q 1000 110 1020 150 Z" fill="var(--india-green)" opacity="0.08" />
+            const sortedKeys = Object.keys(languageData).sort();
+            sortedKeys.forEach(lang => {
+                if (lang.toLowerCase().includes(filter.toLowerCase())) {
+                    const data = languageData[lang];
+                    const item = document.createElement('div');
+                    item.className = 'resource-item';
+                    item.innerHTML = `
+                        <span>${lang} ${data.native ? `<span style="font-size:0.8em; opacity:0.8; margin-left: 5px;">(${data.native})</span>` : ''}</span>
+                        <span class="badge">${data.type}</span>
+                    `;
+                    item.onclick = () => {
+                        document.querySelectorAll('.resource-item').forEach(i => i.classList.remove('active'));
+                        item.classList.add('active');
+                        showResourceDetail(lang);
+                    };
+                    list.appendChild(item);
+                }
+            });
+        }
+
+        function filterResources() {
+            renderResourceList(document.getElementById('resource-search').value);
+        }
+
+        function showResourceDetail(lang) {
+            const data = languageData[lang];
+            const detail = document.getElementById('resource-detail');
             
-            <!-- Waves -->
-            <path d="M 0 135 Q 300 120 600 135 T 1200 135 L 1200 150 L 0 150 Z" fill="var(--india-blue)" opacity="0.05" />
-        </svg>
-    </div>
+            const featuresList = data.features ? data.features.map(f => `<li>✓ ${f}</li>`).join('') : '<li>✓ Rich cultural heritage</li>';
+
+            detail.innerHTML = `
+                <div class="resource-header-banner">
+                    <div class="resource-header-content">
+                        <h2>${lang}</h2>
+                        <div class="resource-native-script">${data.native ? data.native + ' Script' : ''}</div>
+                        <span class="badge" style="background: rgba(255,255,255,0.25); color: white; padding: 6px 14px; font-size: 0.9em; border-radius: 20px; border: 1px solid rgba(255,255,255,0.4); backdrop-filter: blur(5px);">
+                            ${data.type}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="resource-grid">
+                    <div class="resource-card">
+                        <h3>📋 Quick Facts</h3>
+                        <div class="fact-item">
+                            <span class="fact-label">Language Family</span>
+                            <span class="fact-value">${data.family}</span>
+                        </div>
+                        <div class="fact-item">
+                            <span class="fact-label">Primary Script</span>
+                            <span class="fact-value">${data.script}</span>
+                        </div>
+                        <div class="fact-item">
+                            <span class="fact-label">Native Region</span>
+                            <span class="fact-value">${data.region}</span>
+                        </div>
+                        <div class="fact-item">
+                            <span class="fact-label">Est. Speakers</span>
+                            <span class="fact-value">${data.speakers}</span>
+                        </div>
+                    </div>
+
+                    <div class="resource-card">
+                        <h3>📖 About</h3>
+                        <p>${data.desc}</p>
+                        <div style="margin-top: 15px;">
+                            <h4 style="color: var(--text-sub); margin-bottom: 8px; font-size: 0.9em; text-transform: uppercase; letter-spacing: 1px;">Greeting:</h4>
+                            <div style="background: var(--panel-bg); padding: 12px 18px; border-radius: 12px; font-weight: 700; color: var(--green); border: 1px solid var(--panel-border); display: inline-block; box-shadow: var(--shadow-sm);">
+                                🗣️ ${data.greeting}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="resource-card">
+                        <h3>🏛️ History & Culture</h3>
+                        <p>${data.history}</p>
+                    </div>
+
+                    <div class="resource-card">
+                        <h3>✨ Linguistic Features</h3>
+                        <ul style="list-style-type: none; padding-left: 0;">
+                            ${featuresList}
+                        </ul>
+                    </div>
+                </div>
+
+                <button class="action-btn btn-speak" style="width: 100%; padding: 18px; font-size: 1.2em; border-radius: 18px; background: linear-gradient(135deg, var(--saffron) 0%, var(--gold) 100%); color: white; border: none; box-shadow: 0 8px 20px rgba(255, 103, 31, 0.3); transition: all 0.3s ease; font-weight: 800; cursor: pointer;" onclick="tryItOut('${lang}')" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+                    ✏️ Try Translating into ${lang}
+                </button>
+            `;
+        }
+        
+        function tryItOut(lang) {
+            const targetSelect = document.getElementById('target-lang');
+            const exists = Array.from(targetSelect.options).some(opt => opt.value === lang);
+            
+            if (exists) {
+                targetSelect.value = lang;
+                switchTab({target: document.querySelectorAll('.tab-button')[0]}, 'text-tab');
+                
+                if (document.getElementById('source-text').value) {
+                    translateRealTime();
+                }
+                showToast(`Switched target language to ${lang}`);
+                
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                showToast(`${lang} is not available as a target language right now.`, true);
+            }
+        }
+    </script>
 </body>
 </html>

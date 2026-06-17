@@ -159,6 +159,29 @@ LANGUAGE_MAP = {
     "Meitei": "mni",
 }
 
+LANGUAGE_INFO_DB = {
+    "Hindi": {"family": "Indo-Aryan", "script": "Devanagari", "speakers": "600M+", "region": "North, Central India", "description": "Hindi is the most widely spoken language in India, acting as a lingua franca across much of Northern and Central India."},
+    "Tamil": {"family": "Dravidian", "script": "Tamil", "speakers": "75M+", "region": "Tamil Nadu, Sri Lanka, Singapore", "description": "One of the longest-surviving classical languages in the world, with recorded Tamil literature spanning over 2000 years."},
+    "Telugu": {"family": "Dravidian", "script": "Telugu", "speakers": "85M+", "region": "Andhra Pradesh, Telangana", "description": "Known as the 'Italian of the East' due to its vowel-ending words, Telugu has a rich literary and musical heritage."},
+    "Kannada": {"family": "Dravidian", "script": "Kannada", "speakers": "45M+", "region": "Karnataka", "description": "A classical Dravidian language with an unbroken literary history of over a thousand years."},
+    "Malayalam": {"family": "Dravidian", "script": "Malayalam", "speakers": "38M+", "region": "Kerala, Lakshadweep", "description": "Spoken primarily in Kerala, it features a unique rounded script and a vast vocabulary influenced by Sanskrit."},
+    "Marathi": {"family": "Indo-Aryan", "script": "Devanagari", "speakers": "83M+", "region": "Maharashtra", "description": "The official language of Maharashtra, known for its extensive literature and the legacy of Marathi saints."},
+    "Gujarati": {"family": "Indo-Aryan", "script": "Gujarati", "speakers": "55M+", "region": "Gujarat", "description": "The native language of Mahatma Gandhi, it features a script that resembles Devanagari but without the continuous horizontal line at the top."},
+    "Bengali": {"family": "Indo-Aryan", "script": "Bengali-Assamese", "speakers": "230M+", "region": "West Bengal, Bangladesh", "description": "A language renowned for its immense cultural, literary, and musical contributions, epitomized by figures like Rabindranath Tagore."},
+    "Punjabi": {"family": "Indo-Aryan", "script": "Gurmukhi / Shahmukhi", "speakers": "130M+", "region": "Punjab", "description": "A vibrant tonal language known worldwide for its energetic folk music (Bhangra) and rich cultural heritage."},
+    "Urdu": {"family": "Indo-Aryan", "script": "Perso-Arabic", "speakers": "170M+", "region": "Widespread across India and Pakistan", "description": "Celebrated for its beautiful poetry and elegance, Urdu shares its vocabulary heavily with Persian and Arabic."},
+    "Odia": {"family": "Indo-Aryan", "script": "Odia", "speakers": "35M+", "region": "Odisha", "description": "A classical language with distinct rounded script forms, preserving older Indo-Aryan features."},
+    "Assamese": {"family": "Indo-Aryan", "script": "Bengali-Assamese", "speakers": "15M+", "region": "Assam", "description": "The easternmost Indo-European language, acting as a bridge to Northeast India's diverse cultures."},
+    "Sanskrit": {"family": "Indo-Aryan", "script": "Devanagari", "speakers": "25,000+", "region": "Pan-India (Liturgical)", "description": "The classical language of ancient India, root to many modern languages and the primary language of Hindu philosophy."},
+    "Bhojpuri": {"family": "Indo-Aryan (Bihari)", "script": "Devanagari / Kaithi", "speakers": "50M+", "region": "Western Bihar, Eastern UP", "description": "A major dialect/language known for its vibrant folk music, cinema, and cultural influence in the diaspora."},
+    "Awadhi": {"family": "Indo-Aryan", "script": "Devanagari", "speakers": "38M+", "region": "Awadh (Central UP)", "description": "The language of the classic Ramcharitmanas by Tulsidas, renowned for its soft, sweet tone."},
+    "English": {"family": "Indo-European", "script": "Latin", "speakers": "1.5B+", "region": "Global", "description": "A global lingua franca widely used in India for administration, education, and business."}
+}
+
+for lang in LANGUAGE_MAP.keys():
+    if lang not in LANGUAGE_INFO_DB:
+        LANGUAGE_INFO_DB[lang] = {"family": "Regional", "script": "Local", "speakers": "Varies", "region": "India", "description": f"{lang} forms an integral part of India's rich linguistic diversity."}
+
 def translate_chunk(text: str, source_code: str, target_code: str, target_lang_name: str = "") -> str:
     """Translate a single chunk of text."""
     if not text.strip():
@@ -265,6 +288,13 @@ def build_translated_pdf(translated_text: str, original_filename: str, target_la
 @app.get("/")
 def read_root():
     return {"message": "BhashaAI API is running"}
+
+@app.get("/api/languages/info")
+def get_languages_info():
+    """
+    Endpoint to retrieve facts and educational information about all supported languages.
+    """
+    return LANGUAGE_INFO_DB
 
 @app.post("/api/translate/text")
 async def translate_text(request: TranslationRequest):
