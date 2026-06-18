@@ -107,7 +107,6 @@ LANGUAGE_MAP = {
     # Other Major Indian Languages
     "Sanskrit": "sa",
     "Nepali": "ne",
-    "Konkani": "kok",
     "Manipuri": "mni",
     "Sindhi": "sd",
     "Bodo": "brx",
@@ -128,7 +127,6 @@ LANGUAGE_MAP = {
     "Gondi": "ta",             # Gondi Language (Dravidian)
     "Tulu": "kn",              # Tulu Language (South Coastal)
     "Kodava": "kn",            # Kodava Language
-    "Konkani-Devanagari": "kok",  # Konkani variant
     
     # Eastern Indian Dialects
     "Angika": "hi",
@@ -422,7 +420,6 @@ def text_to_speech(text: str, lang: str):
         'Assamese': 'as',
         'Sanskrit': 'sa',
         'Nepali': 'ne',
-        'Konkani': 'hi',
         'Manipuri': 'hi',
         'Sindhi': 'sd',
         'Bodo': 'hi',
@@ -451,7 +448,7 @@ def text_to_speech(text: str, lang: str):
     )
     
     try:
-        response = urllib.request.urlopen(req)
+        response = urllib.request.urlopen(req, timeout=10)
         def iterfile():
             while True:
                 chunk = response.read(4096)

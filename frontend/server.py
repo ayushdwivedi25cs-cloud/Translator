@@ -26,7 +26,7 @@ class MyHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
 
 if __name__ == "__main__":
     Handler = MyHTTPRequestHandler
-    with socketserver.TCPServer(("", PORT), Handler) as httpd:
+    with socketserver.ThreadingTCPServer(("", PORT), Handler) as httpd:
         print(f"[Frontend] Server running at http://localhost:{PORT}")
         print(f"[Directory] Serving from: {DIRECTORY}")
         print("Press Ctrl+C to stop")
